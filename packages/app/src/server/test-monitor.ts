@@ -20,23 +20,8 @@ client.on("connect", function (connection) {
 			console.log("Received: '" + message.utf8Data + "'");
 		}
 	});
-
-	function sendNumber() {
-		if (connection.connected) {
-			const number = Math.round(Math.random() * 0xffffff);
-			connection.sendUTF(
-				JSON.stringify({
-					type: "log",
-					data: { log: number, timestamp: Date.now() },
-				})
-			);
-			setTimeout(sendNumber, 1000);
-		}
-	}
-	sendNumber();
 });
 
 client.connect("ws://localhost:58498/", "echo-protocol", "", {
-	"fsdt-connection-type": "source",
-	"fsdt-connection-name": "test",
+	"fsdt-connection-type": "monitor",
 });
