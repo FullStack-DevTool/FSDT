@@ -1,4 +1,5 @@
 import { EventType } from "./EventType";
+import { LogLevel } from "./LogLevel";
 
 export type FsdtMessage<T = any> = {
   type: EventType;
@@ -10,8 +11,9 @@ export type FsdtServerMessage = FsdtMessage & {
 }
 
 export type FsdtLogMessage = {
-  log: string;
+  content: string;
   timestamp: number;
+  level: LogLevel;
   tag?: string;
 }
 

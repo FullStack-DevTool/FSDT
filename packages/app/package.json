@@ -4,14 +4,6 @@
 	"version": "0.1.0",
 	"description": "My Electron application description",
 	"main": ".webpack/main",
-	"exports": {
-		"./sdk": {
-			"import": "./src/sdk/index.ts",
-			"require": "./src/sdk/index.ts",
-			"default": "./src/sdk/index.ts",
-			"node": "./src/sdk/index.ts"
-		}
-	},
 	"bin": {
 		"fullstack-devtool": "./bin/start.js"
 	},
