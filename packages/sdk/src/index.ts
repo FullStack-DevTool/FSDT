@@ -1,1 +1,3 @@
-export * from "./lib/FsdtLogger";
+import { FsdtLogger } from './lib/FsdtLogger';
+
+export default FsdtLogger;

@@ -1,12 +1,14 @@
-import { EventType, FsdtLogMessage, FsdtMessage, LogLevel } from '@fullstack-devtool/core';
-import { client as WebSocketClient, connection as WsConnection } from 'websocket';
-
-type FsdtServerConfig = {
-  domainName?: string; // default is "localhost"
-  port: number;
-  connectionType?: 'source' | 'monitor';
-  useConsole?: boolean;
-};
+import {
+  EventType,
+  FsdtLogMessage,
+  FsdtMessage,
+  LogLevel,
+} from '@fullstack-devtool/core';
+import {
+  client as WebSocketClient,
+  connection as WsConnection,
+} from 'websocket';
+import { FsdtServerConfig, OnLogReceived } from '../types';
 
 const DEFAULT_CONNECTION_TYPE = 'source';
 const DEFAULT_DOMAIN_NAME = 'localhost';
@@ -16,24 +18,37 @@ export abstract class BaseLogger {
   private _connection: WsConnection | null = null;
   private _isConnected = false;
   private _waitingQueue: FsdtMessage<FsdtLogMessage>[] = [];
+  private _name: string;
   private _config: FsdtServerConfig;
 
-  constructor(sourceName: string, config: FsdtServerConfig) {
+  private _onLogReceived: OnLogReceived | null = null;
+
+  private _reconnectionDelay = 1000;
+
+  constructor(name: string, config: FsdtServerConfig) {
     this._config = config;
+    this._name = name;
     this._client = new WebSocketClient();
 
     this._client.on('connect', this.onConnect.bind(this));
 
-    this._client.connect(
-      `ws://${this._config.domainName || DEFAULT_DOMAIN_NAME}:${this._config.port}/`,
-      'echo-protocol',
-      '',
-      {
-        'fsdt-connection-type':
-          this._config.connectionType || DEFAULT_CONNECTION_TYPE,
-        'fsdt-connection-name': sourceName,
-      }
-    );
+    this._client.on('connectFailed', (error) => {
+      console.error(error);
+      // Try to reconnect
+      this.tryReconnection();
+    });
+
+    this.connect();
+  }
+  /**
+   *
+   * Add a callback to be called when a log is received from the server (only available for monitor)
+   */
+  onLogReceived(callback: (message: FsdtMessage<FsdtLogMessage>) => void) {
+    if (this._config.connectionType !== 'monitor') {
+      throw new Error('onLogReceived is only available for monitor');
+    }
+    this._onLogReceived = callback;
   }
 
   private onConnect(connection: WsConnection) {
@@ -42,26 +57,39 @@ export abstract class BaseLogger {
 
     this.processWaitingQueue();
 
+    this._connection.on('message', (message) => {
+      if (message.type !== 'utf8') {
+        return;
+      }
+
+      const data = JSON.parse(message.utf8Data!);
+
+      if (data.type === EventType.SHARED_LOG && this._onLogReceived) {
+        this._onLogReceived(data);
+      }
+    });
+
     this._connection.on('close', () => {
       this._isConnected = false;
+      this.tryReconnection();
     });
   }
 
   protected displayLog(level: LogLevel, log: any) {
-    if(this._config.useConsole === false) {
+    if (this._config.useConsole === false) {
       return;
     }
-    
+
     const handlers = {
       [LogLevel.LOG]: console.log,
       [LogLevel.DEBUG]: console.debug,
       [LogLevel.ERROR]: console.error,
       [LogLevel.INFO]: console.info,
-      [LogLevel.WARN]: console.warn
-    }
+      [LogLevel.WARN]: console.warn,
+    };
     const handler = handlers[level];
 
-    if(!handler) {
+    if (!handler) {
       throw new Error(`Unknown log level: ${level}`);
     }
 
@@ -72,10 +100,10 @@ export abstract class BaseLogger {
     const logData: FsdtMessage<FsdtLogMessage> = {
       type: EventType.LOG,
       data: {
-        timestamp: Date.now(),
+        timestamp: new Date().toUTCString(),
         level,
-        content: log
-      }
+        content: log,
+      },
     };
 
     // If we are not connected, we push the log to the waiting queue
@@ -83,12 +111,32 @@ export abstract class BaseLogger {
       this._waitingQueue.push(logData);
       return;
     }
-    
-    this._connection.sendUTF(
-      JSON.stringify(logData)
+
+    this._connection.sendUTF(JSON.stringify(logData));
+  }
+
+  private connect() {
+    this._client.connect(
+      `ws://${this._config.domainName || DEFAULT_DOMAIN_NAME}:${
+        this._config.port
+      }/`,
+      'echo-protocol',
+      '',
+      {
+        'fsdt-connection-type':
+          this._config.connectionType || DEFAULT_CONNECTION_TYPE,
+        'fsdt-connection-name': this._name,
+      }
     );
   }
-  
+
+  private tryReconnection() {
+    // Try to reconnect
+    setTimeout(() => {
+      this.connect();
+    }, this._reconnectionDelay);
+  }
+
   private processWaitingQueue() {
     this._waitingQueue.forEach((logData) => {
       this._connection!.sendUTF(JSON.stringify(logData));
