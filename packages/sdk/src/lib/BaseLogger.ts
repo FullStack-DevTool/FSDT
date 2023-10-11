@@ -4,18 +4,15 @@ import {
   FsdtMessage,
   LogLevel,
 } from '@fullstack-devtool/core';
-import {
-  client as WebSocketClient,
-  connection as WsConnection,
-} from 'websocket';
+
+import WebSocket from 'ws';
 import { FsdtServerConfig, OnLogReceived } from '../types';
 
 const DEFAULT_CONNECTION_TYPE = 'source';
 const DEFAULT_DOMAIN_NAME = 'localhost';
 
 export abstract class BaseLogger {
-  private _client: WebSocketClient;
-  private _connection: WsConnection | null = null;
+  private _client: WebSocket | null = null;
   private _isConnected = false;
   private _waitingQueue: FsdtMessage<FsdtLogMessage>[] = [];
   private _name: string;
@@ -28,15 +25,6 @@ export abstract class BaseLogger {
   constructor(name: string, config: FsdtServerConfig) {
     this._config = config;
     this._name = name;
-    this._client = new WebSocketClient();
-
-    this._client.on('connect', this.onConnect.bind(this));
-
-    this._client.on('connectFailed', (error) => {
-      console.error(error);
-      // Try to reconnect
-      this.tryReconnection();
-    });
 
     this.connect();
   }
@@ -49,30 +37,6 @@ export abstract class BaseLogger {
       throw new Error('onLogReceived is only available for monitor');
     }
     this._onLogReceived = callback;
-  }
-
-  private onConnect(connection: WsConnection) {
-    this._isConnected = true;
-    this._connection = connection;
-
-    this.processWaitingQueue();
-
-    this._connection.on('message', (message) => {
-      if (message.type !== 'utf8') {
-        return;
-      }
-
-      const data = JSON.parse(message.utf8Data!);
-
-      if (data.type === EventType.SHARED_LOG && this._onLogReceived) {
-        this._onLogReceived(data);
-      }
-    });
-
-    this._connection.on('close', () => {
-      this._isConnected = false;
-      this.tryReconnection();
-    });
   }
 
   protected displayLog(level: LogLevel, log: any) {
@@ -107,27 +71,55 @@ export abstract class BaseLogger {
     };
 
     // If we are not connected, we push the log to the waiting queue
-    if (!this._isConnected || !this._connection) {
+    if (!this._isConnected || !this._client) {
       this._waitingQueue.push(logData);
       return;
     }
 
-    this._connection.sendUTF(JSON.stringify(logData));
+    this._client?.send(JSON.stringify(logData));
   }
 
   private connect() {
-    this._client.connect(
+    this._client = new WebSocket(
       `ws://${this._config.domainName || DEFAULT_DOMAIN_NAME}:${
         this._config.port
       }/`,
-      'echo-protocol',
-      '',
       {
-        'fsdt-connection-type':
-          this._config.connectionType || DEFAULT_CONNECTION_TYPE,
-        'fsdt-connection-name': this._name,
+        protocol: 'echo-protocol',
+        headers: {
+          'fsdt-connection-type':
+            this._config.connectionType || DEFAULT_CONNECTION_TYPE,
+          'fsdt-connection-name': this._name,
+        },
       }
     );
+
+    this._client.on('open', () => {
+      this.onConnect();
+    });
+
+    this._client.on('message', (message) => {
+      const data = JSON.parse(message.toString());
+
+      if (data.type === EventType.SHARED_LOG && this._onLogReceived) {
+        this._onLogReceived(data);
+      }
+    });
+
+    this._client.on('close', () => {
+      this._isConnected = false;
+      this.tryReconnection();
+    });
+
+    this._client.on('error', (error) => {
+      console.error(error);
+      // Try to reconnect
+      this.tryReconnection();
+    });
+  }
+  private onConnect() {
+    this._isConnected = true;
+    this.processWaitingQueue();
   }
 
   private tryReconnection() {
@@ -139,7 +131,7 @@ export abstract class BaseLogger {
 
   private processWaitingQueue() {
     this._waitingQueue.forEach((logData) => {
-      this._connection!.sendUTF(JSON.stringify(logData));
+      this._client!.send(JSON.stringify(logData));
     });
 
     this._waitingQueue = [];

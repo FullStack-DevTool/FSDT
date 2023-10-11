@@ -1,20 +1,20 @@
 import { ConnectionType } from "@fullstack-devtool/core";
-import { connection } from "websocket";
+import { WebSocket } from "ws";
 
 export class FsdtConnection {
-	constructor(
-		private _connection: connection,
-		private _type: ConnectionType,
-		private _name: string = ""
-	) {}
+  constructor(
+    private _connection: WebSocket,
+    private _type: ConnectionType,
+    private _name: string = ""
+  ) {}
 
-	get connection() {
-		return this._connection;
-	}
+  get connection() {
+    return this._connection;
+  }
 
-	get name() {
-		return this._name;
-	}
+  get name() {
+    return this._name;
+  }
 
   get type() {
     return this._type;

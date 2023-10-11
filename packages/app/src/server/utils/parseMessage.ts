@@ -5,6 +5,7 @@ import {
   FsdtLogMessage,
   EventType,
 } from "@fullstack-devtool/core";
+import { RawData } from "ws";
 
 function validateMessageData(message: FsdtMessage<FsdtLogMessage>) {
   if (!message.type || !message.data.content || !message.data.timestamp) {
@@ -23,12 +24,9 @@ function validateMessageData(message: FsdtMessage<FsdtLogMessage>) {
 /**
  * It parses and validate the message received from the client
  */
-export function parseMessage(message: Message) {
-  if (message.type !== "utf8" || !message.utf8Data)
-    throw new Error("The message should be utf8 and not empty");
-  const parsedMessage = safeJsonParse<FsdtMessage<FsdtLogMessage>>(
-    message.utf8Data
-  );
+export function parseMessage(message: RawData) {
+  const msgContent = message.toString();
+  const parsedMessage = safeJsonParse<FsdtMessage<FsdtLogMessage>>(msgContent);
   if (!parsedMessage) throw new Error("The message should be a valid JSON");
 
   validateMessageData(parsedMessage);
