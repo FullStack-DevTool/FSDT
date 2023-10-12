@@ -1,6 +1,6 @@
 {
   "name": "@fullstack-devtool/core",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "index.ts",
   "license": "MIT"
 }

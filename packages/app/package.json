@@ -1,17 +1,9 @@
 {
-	"name": "fullstack-devtool",
+	"name": "@fullstack-devtool/app",
 	"productName": "fullstack-devtool",
 	"version": "0.1.0",
 	"description": "My Electron application description",
 	"main": ".webpack/main",
-	"exports": {
-		"./sdk": {
-			"import": "./src/sdk/index.ts",
-			"require": "./src/sdk/index.ts",
-			"default": "./src/sdk/index.ts",
-			"node": "./src/sdk/index.ts"
-		}
-	},
 	"bin": {
 		"fullstack-devtool": "./bin/start.js"
 	},
@@ -58,10 +50,10 @@
 		"typescript": "~4.5.4"
 	},
 	"dependencies": {
+		"@fullstack-devtool/core": "*",
 		"electron-squirrel-startup": "^1.0.0",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",
-		"websocket": "^1.0.34",
-		"@fullstack-devtool/core": "*"
+		"ws": "^8.14.2"
 	}
 }
