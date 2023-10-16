@@ -12,7 +12,7 @@ function validateMessageData(
 ) {
   if (!message.type || !message.data.content || !message.data.timestamp) {
     throw new Error(
-      "The message should have a type, a data.log and a data.timestamp"
+      "The message should have a type, a data.content and a data.timestamp"
     );
   }
 

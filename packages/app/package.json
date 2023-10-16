@@ -2,7 +2,7 @@
 	"name": "@fullstack-devtool/app",
 	"productName": "fullstack-devtool",
 	"version": "0.1.0",
-	"description": "My Electron application description",
+	"description": "A desktop application to retrieve logs from multiple applications",
 	"main": ".webpack/main",
 	"bin": {
 		"fullstack-devtool": "./bin/start.js"
@@ -12,7 +12,8 @@
 		"package": "electron-forge package",
 		"make": "electron-forge make",
 		"publish": "electron-forge publish",
-		"lint": "eslint --ext .ts,.tsx ."
+		"lint": "eslint --ext .ts,.tsx .",
+		"test:server": "jest ./src/server"
 	},
 	"keywords": [],
 	"author": {

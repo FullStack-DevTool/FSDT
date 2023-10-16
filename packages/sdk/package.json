@@ -1,7 +1,7 @@
 {
   "name": "@fullstack-devtool/sdk",
   "version": "1.0.0",
-  "description": "A sdk to send logs to fsdt app.",
+  "description": "A sdk to communicate with the Fullstack Devtool server",
   "main": "build/main/index.js",
   "typings": "build/main/index.d.ts",
   "module": "build/module/index.js",
