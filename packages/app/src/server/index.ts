@@ -8,6 +8,7 @@ import {
   sendServerToMonitorMessage,
 } from "./utils/sendMessage";
 import { parseMessage } from "./utils/parseMessage";
+import { extractConnectionData } from "./utils/extractConnectionData";
 
 const HOST_NAME = "localhost";
 const PORT = Number(process.env.FSDT_PORT) || 0; // Get port from environment variable or use 0 to use a random port
@@ -36,10 +37,11 @@ function setupWsServer(server: http.Server) {
   });
 
   wsServer.on("connection", (wsConnection, req) => {
+    const { connectionName, connectionType } = extractConnectionData(req);
     const connection = new FsdtConnection(
       wsConnection,
-      req.headers["fsdt-connection-type"] as ConnectionType,
-      req.headers["fsdt-connection-name"] as string
+      connectionType,
+      connectionName
     );
 
     connectionManager.register(connection);

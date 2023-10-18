@@ -60,6 +60,7 @@
 		"react-dom": "^18.2.0",
 		"react-icons": "^4.11.0",
 		"ws": "^8.14.2",
-		"zustand": "^4.4.3"
+		"zustand": "^4.4.3",
+		"@fullstack-devtool/sdk": "*"
 	}
 }

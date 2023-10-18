@@ -5,14 +5,15 @@ import {
   LogLevel,
 } from '@fullstack-devtool/core';
 
-import WebSocket from 'ws';
+import Ws from 'ws';
 import { FsdtServerConfig, OnLogReceived } from '../types';
+import { stringifyHeaders } from './utils/stringifyHeaders';
 
 const DEFAULT_CONNECTION_TYPE = 'source';
 const DEFAULT_DOMAIN_NAME = 'localhost';
 
 export abstract class BaseLogger {
-  private _client: WebSocket | null = null;
+  private _client: Ws | WebSocket | null = null;
   private _isConnected = false;
   private _waitingQueue: FsdtMessage<FsdtLogMessage>[] = [];
   private _name: string;
@@ -79,43 +80,54 @@ export abstract class BaseLogger {
     this._client?.send(JSON.stringify(logData));
   }
 
+  /**
+   * Initiate the connection to the server.
+   * It uses the WebSocket API if the Logger is used in browser, otherwise it uses the ws package
+   */
   private connect() {
-    this._client = new WebSocket(
-      `ws://${this._config.domainName || DEFAULT_DOMAIN_NAME}:${
-        this._config.port
-      }/`,
-      {
+    const url = `ws://${this._config.domainName || DEFAULT_DOMAIN_NAME}:${
+      this._config.port
+    }/`;
+    const headers = {
+      'fsdt-connection-type':
+        this._config.connectionType || DEFAULT_CONNECTION_TYPE,
+      'fsdt-connection-name': this._name,
+    };
+
+    if (typeof window !== 'undefined') {
+      this._client = new window.WebSocket(
+        url + stringifyHeaders(headers),
+        'echo-protocol'
+      );
+    } else {
+      this._client = new Ws(url, {
         protocol: 'echo-protocol',
-        headers: {
-          'fsdt-connection-type':
-            this._config.connectionType || DEFAULT_CONNECTION_TYPE,
-          'fsdt-connection-name': this._name,
-        },
-      }
-    );
+        headers,
+      });
+    }
 
-    this._client.on('open', () => {
+    this._client.onopen = () => {
       this.onConnect();
-    });
+    };
 
-    this._client.on('message', (message) => {
+    this._client.onmessage = (message: MessageEvent) => {
       const data = JSON.parse(message.toString());
 
       if (data.type === EventType.SHARED_LOG && this._onLogReceived) {
         this._onLogReceived(data);
       }
-    });
+    };
 
-    this._client.on('close', () => {
+    this._client.onclose = () => {
       this._isConnected = false;
       this.tryReconnection();
-    });
+    };
 
-    this._client.on('error', (error) => {
+    this._client.onerror = (error: Event) => {
       console.error(error);
       // Try to reconnect
       this.tryReconnection();
-    });
+    };
   }
   private onConnect() {
     this._isConnected = true;
