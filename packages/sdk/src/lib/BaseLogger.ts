@@ -1,8 +1,11 @@
 import {
   EventType,
-  FsdtLogMessage,
-  FsdtMessage,
+  FsdtLogMessageContent,
+  FsdtSourceMessage,
+  FsdtServerMessage,
   LogLevel,
+  isErrorEvent,
+  isSharedLogEvent,
 } from '@fullstack-devtool/core';
 
 import Ws from 'ws';
@@ -15,7 +18,7 @@ const DEFAULT_DOMAIN_NAME = 'localhost';
 export abstract class BaseLogger {
   private _client: Ws | WebSocket | null = null;
   private _isConnected = false;
-  private _waitingQueue: FsdtMessage<FsdtLogMessage>[] = [];
+  private _waitingQueue: FsdtSourceMessage<FsdtLogMessageContent>[] = [];
   private _name: string;
   private _config: FsdtServerConfig;
 
@@ -33,7 +36,9 @@ export abstract class BaseLogger {
    *
    * Add a callback to be called when a log is received from the server (only available for monitor)
    */
-  onLogReceived(callback: (message: FsdtMessage<FsdtLogMessage>) => void) {
+  onLogReceived(
+    callback: (message: FsdtServerMessage<FsdtLogMessageContent>) => void
+  ) {
     if (this._config.connectionType !== 'monitor') {
       throw new Error('onLogReceived is only available for monitor');
     }
@@ -62,7 +67,7 @@ export abstract class BaseLogger {
   }
 
   protected sendLog(level: LogLevel, log: any) {
-    const logData: FsdtMessage<FsdtLogMessage> = {
+    const logData: FsdtSourceMessage<FsdtLogMessageContent> = {
       type: EventType.LOG,
       data: {
         timestamp: new Date().toUTCString(),
@@ -87,7 +92,7 @@ export abstract class BaseLogger {
   private connect() {
     const url = `ws://${this._config.domainName || DEFAULT_DOMAIN_NAME}:${
       this._config.port
-    }/`;
+    }`;
     const headers = {
       'fsdt-connection-type':
         this._config.connectionType || DEFAULT_CONNECTION_TYPE,
@@ -111,10 +116,14 @@ export abstract class BaseLogger {
     };
 
     this._client.onmessage = (message: MessageEvent) => {
-      const data = JSON.parse(message.toString());
+      const data = JSON.parse(message.data.toString());
 
-      if (data.type === EventType.SHARED_LOG && this._onLogReceived) {
+      if (isSharedLogEvent(data) && this._onLogReceived) {
         this._onLogReceived(data);
+      }
+
+      if (isErrorEvent(data)) {
+        console.error(data.data.error);
       }
     };
 

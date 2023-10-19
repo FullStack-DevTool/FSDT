@@ -3,8 +3,8 @@
  */
 import {
   EventType,
-  FsdtErrorMessage,
-  FsdtLogMessage,
+  FsdtErrorMessageContent,
+  FsdtLogMessageContent,
   FsdtServerMessage,
   safeJsonStringify,
 } from "@fullstack-devtool/core";
@@ -14,7 +14,7 @@ import { WebSocket } from "ws";
 export function sendServerToMonitorMessage(
   monitor: FsdtConnection,
   source: FsdtConnection,
-  data: FsdtLogMessage
+  data: FsdtLogMessageContent
 ): void {
   if (!monitor) {
     throw new Error("You should connect a monitor to send a message");
@@ -28,7 +28,7 @@ export function sendServerToMonitorMessage(
 }
 
 export function sendErrorMessage(connection: WebSocket, error: string): void {
-  const errorMessage: FsdtErrorMessage = {
+  const errorMessage: FsdtErrorMessageContent = {
     timestamp: Date.now(),
     error,
   };

@@ -1,3 +1,8 @@
-import { FsdtMessage, FsdtLogMessage } from '@fullstack-devtool/core';
+import {
+  FsdtLogMessageContent,
+  FsdtServerMessage,
+} from '@fullstack-devtool/core';
 
-export type OnLogReceived = (message: FsdtMessage<FsdtLogMessage>) => void;
+export type OnLogReceived = (
+  message: FsdtServerMessage<FsdtLogMessageContent>
+) => void;
