@@ -15,11 +15,13 @@ const Main = styled.div`
 getPort().then((port) => {
   console.log("port", port);
   const logger = new FsdtLogger("Test", {
-    connectionType: "source",
+    connectionType: "monitor",
     port,
   });
 
-  logger.log("Test");
+  logger.onLogReceived((message) => {
+    console.log({ message });
+  });
 });
 
 export function App() {

@@ -68,6 +68,7 @@ function setupWsServer(server: http.Server) {
         connectionManager.unregister(connection);
       });
     } catch (error) {
+      console.error(error);
       sendErrorMessage(wsConnection, error.message);
       wsConnection.close();
     }
