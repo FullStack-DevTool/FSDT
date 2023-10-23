@@ -112,7 +112,10 @@ export abstract class BaseLogger {
     }
 
     this._client.onopen = () => {
-      this.onConnect();
+      // verify if readyStatus is 1 to make sure the connection is open
+      if (this._client?.readyState === 1) {
+        this.onConnect();
+      }
     };
 
     this._client.onmessage = (message: MessageEvent) => {
