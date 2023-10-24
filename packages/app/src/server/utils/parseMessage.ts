@@ -1,4 +1,3 @@
-import { Message } from "websocket";
 import {
   safeJsonParse,
   FsdtSourceMessage,
