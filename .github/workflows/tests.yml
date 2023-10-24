@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  test-spell:
+  test-spelling:
     runs-on: ubuntu-latest
     timeout-minutes: 2
     steps:
