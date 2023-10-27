@@ -34,7 +34,20 @@ export default function ListView() {
 
   return (
     <StyledListRenderer className="ag-theme-material">
-      <AgGridReact ref={gridRef} rowData={messages} columnDefs={cols} suppressScrollOnNewData />
+      <AgGridReact
+        ref={gridRef}
+        rowData={messages}
+        columnDefs={cols}
+        suppressScrollOnNewData
+        gridOptions={{
+          onBodyScroll(event) {
+            console.log(event)
+          },
+          onBodyScrollEnd(event) {
+            console.log('onBodyScrollEnd', event)
+          },
+        }}
+      />
     </StyledListRenderer>
   )
 }
