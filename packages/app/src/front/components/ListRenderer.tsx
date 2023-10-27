@@ -1,19 +1,24 @@
-import {AgGridReact} from "ag-grid-react";
+import { AgGridReact } from "ag-grid-react";
+import { FsdtServerMessage } from "@fullstack-devtool/core";
 
 import "ag-grid-community/styles/ag-grid.css";
+import { useState } from "react";
+import { ColDef } from "ag-grid-community";
 
 interface IProps {
-  rowData: any[];
+  rowData: FsdtServerMessage[];
 }
 
-const cols = [
-  {field: "date"},
-  {field: "source"},
-  {field: "type"},
-  {field: "content"}
+const cols: ColDef<FsdtServerMessage> = [
+  { headerName: "Source", field: "source" },
+  { headerName: "Content", field: "content" },
+  { headerName: "Time", field: "timestamp" },
+  { headerName: "Level", field: "level" },
+  { headerName: "Tag", field: "tag" },
+  { headerName: "Message", field: "message" },
 ];
 
-
-export default function ListRenderer({rowData}: IProps) {
-  return <AgGridReact rowData={rowData} columnDefs={cols} />;
+export default function ListRenderer({ rowData }: IProps) {
+  const [columnDefs, set] = useState(cols);
+  return <AgGridReact rowData={rowData} columnDefs={columnDefs} />;
 }

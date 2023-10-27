@@ -1,4 +1,4 @@
-import { EventType, FsdtLogMessageContent, FsdtMessage, safeJsonParse } from '@fullstack-devtool/core'
+import { safeJsonParse, FsdtMessage, FsdtLogMessageContent, EventType } from '@fullstack-devtool/core'
 import { RawData } from 'ws'
 
 function validateMessageData(message: FsdtMessage<FsdtLogMessageContent>) {
