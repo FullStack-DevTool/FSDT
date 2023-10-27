@@ -1,28 +1,31 @@
-import * as ReactDOM from "react-dom";
-import styled from "@emotion/styled";
+import { createRoot } from 'react-dom/client'
+import styled from '@emotion/styled'
 
-import AppContainer from "./components/AppContainer";
-import Sidebar from "./components/section/Sidebar";
-import Header from "./components/section/Header";
-import Content from "./components/Content";
-import FsdtLogger from "@fullstack-devtool/sdk";
-import { getPort } from "./utils/server.service";
+import AppContainer from './components/AppContainer'
+import Sidebar from './components/section/Sidebar'
+import Header from './components/section/Header'
+import Content from './components/Content'
+import FsdtLogger from '@fullstack-devtool/sdk'
+import { getPort } from './utils/server.service'
+import { useMessageStore } from './stores/messageStore'
 
 const Main = styled.div`
   flex: 1;
-`;
+  display: flex;
+  flex-direction: column;
+`
 
 getPort().then((port) => {
-  console.log("port", port);
-  const logger = new FsdtLogger("Test", {
-    connectionType: "monitor",
+  console.log('port', port)
+  const logger = new FsdtLogger('Test', {
+    connectionType: 'monitor',
     port,
-  });
+  })
 
   logger.onLogReceived((message) => {
-    console.log({ message });
-  });
-});
+    useMessageStore.getState().addMessage(message)
+  })
+})
 
 export function App() {
   return (
@@ -33,11 +36,9 @@ export function App() {
         <Content />
       </Main>
     </AppContainer>
-  );
+  )
 }
 
-function render() {
-  ReactDOM.render(<App />, document.body);
-}
-
-render();
+const container = document.getElementById('app')
+const root = createRoot(container!)
+root.render(<App />)
