@@ -1,27 +1,27 @@
-import { LogLevel } from "@fullstack-devtool/core";
-import { BaseLogger } from "./BaseLogger";
+import { Any, LogLevel } from '@fullstack-devtool/core';
+import { BaseLogger } from './BaseLogger';
 
 export class FsdtLogger extends BaseLogger {
-  log(content: any) {
+  log(content: Any) {
     this.displayLog(LogLevel.LOG, content);
     this.sendLog(LogLevel.LOG, content);
   }
-  info(content: any) {
+  info(content: Any) {
     this.displayLog(LogLevel.INFO, content);
     this.sendLog(LogLevel.INFO, content);
   }
 
-  debug(content: any) {
+  debug(content: Any) {
     this.displayLog(LogLevel.DEBUG, content);
     this.sendLog(LogLevel.DEBUG, content);
   }
 
-  warn(content: any) {
+  warn(content: Any) {
     this.displayLog(LogLevel.WARN, content);
     this.sendLog(LogLevel.WARN, content);
   }
 
-  error(content: any) {
+  error(content: Any) {
     this.displayLog(LogLevel.ERROR, content);
     this.sendLog(LogLevel.ERROR, content);
   }

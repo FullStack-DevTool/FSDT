@@ -34,8 +34,10 @@ $ npm install -D @fullstack-devtool/app
 ### Start
 
 ```bash
-$ npm run fullstack-devtool
+$ npm run fullstack-devtool -p <PORT_NUMBER>
 ```
+
+**<PORT_NUMBER>** is the port that will be used by the server. ⚠️ **It should be defined**.
 
 ## Usage
 
@@ -43,7 +45,7 @@ $ npm run fullstack-devtool
 import FsdtLogger from "@fullstack-devtool/sdk";
 
 const logger = new FsdtLogger("test-app-1", {
-  port: 1234,
+  port: 1234, // It should be equal to the <PORT_NUMBER>
   connectionType: "source",
 });
 

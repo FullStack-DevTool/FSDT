@@ -15,8 +15,9 @@
     "test": "run-s test:*",
     "test:spelling": "cspell \"{README.md,.github/*.md,src/**/*.ts}\"",
     "test:lint": "eslint packages/**/src/*.{ts,tsx}",
-    "test:format": "prettier packages/**/src/*.{ts,tsx} --list-different"
-  },
+    "test:format": "prettier packages/**/src/*.{ts,tsx} --list-different",
+		"build": "yarn --cwd packages/app package & yarn --cwd packages/sdk build"
+	},
 	"devDependencies": {
 		"@typescript-eslint/eslint-plugin": "^6.9.0",
 		"@typescript-eslint/parser": "^6.9.0",

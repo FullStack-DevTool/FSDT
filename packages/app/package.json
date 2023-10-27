@@ -13,7 +13,7 @@
 		"make": "electron-forge make",
 		"publish": "electron-forge publish",
 		"lint": "eslint --ext .ts,.tsx .",
-		"test:server": "jest ./src/server"
+		"test": "jest ."
 	},
 	"keywords": [],
 	"author": {
