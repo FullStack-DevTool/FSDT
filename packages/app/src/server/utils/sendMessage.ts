@@ -2,8 +2,8 @@
  * This file aims to contain all the functions that send messages to the connected clients (monitor or source)
  */
 import {
-  EventType,
-  FsdtErrorMessageContent,
+  createErrorMessage,
+  createServerLog,
   FsdtLogMessageContent,
   FsdtServerMessage,
   safeJsonStringify,
@@ -19,18 +19,11 @@ export function sendServerToMonitorMessage(
   if (!monitor) {
     throw new Error('You should connect a monitor before sending a message')
   }
-  const message: FsdtServerMessage = {
-    type: EventType.SHARED_LOG,
-    source: source.name,
-    data,
-  }
+  const message: FsdtServerMessage = createServerLog(source.name, data)
   monitor.connection.send(safeJsonStringify(message))
 }
 
 export function sendErrorMessage(connection: WebSocket, error: string): void {
-  const errorMessage: FsdtErrorMessageContent = {
-    timestamp: Date.now(),
-    error,
-  }
-  connection.send(safeJsonStringify({ type: EventType.ERROR, data: errorMessage }))
+  const errorMessage = createErrorMessage(error)
+  connection.send(safeJsonStringify(errorMessage))
 }

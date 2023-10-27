@@ -3,7 +3,7 @@ import {
   createSourceLog,
   FsdtLogMessageContent,
   FsdtServerMessage,
-  FsdtSourceMessage,
+  FsdtMessage,
   isErrorEvent,
   isSharedLogEvent,
   LogLevel,
@@ -19,7 +19,7 @@ const DEFAULT_DOMAIN_NAME = 'localhost';
 export abstract class BaseLogger {
   private _client: Ws | WebSocket | null = null;
   private _isConnected = false;
-  private _waitingQueue: FsdtSourceMessage<FsdtLogMessageContent>[] = [];
+  private _waitingQueue: FsdtMessage<FsdtLogMessageContent>[] = [];
   private _name: string;
   private _config: FsdtServerConfig;
 

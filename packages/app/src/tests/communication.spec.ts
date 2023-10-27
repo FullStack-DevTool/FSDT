@@ -1,11 +1,11 @@
 import { Server } from 'http'
 import {
   ConnectionType,
+  createSourceLog,
   EventType,
   FsdtLogMessageContent,
-  FsdtSourceMessage,
+  FsdtMessage,
   LogLevel,
-  createSourceLog,
 } from '@fullstack-devtool/core'
 import { initServer } from '../server'
 import WebSocket from 'ws'
@@ -58,13 +58,13 @@ describe('Communication between the sources and the monitor through the server',
 
   it('should send logs from the sources to the monitor', (done) => {
     let counter = 0
-    const log1: FsdtSourceMessage<FsdtLogMessageContent> = createSourceLog(LogLevel.INFO, 'test')
+    const log1: FsdtMessage<FsdtLogMessageContent> = createSourceLog(LogLevel.INFO, 'test')
     const expectedLog1Received = {
       ...log1,
       source: 'source1',
       type: EventType.SHARED_LOG,
     }
-    const log2: FsdtSourceMessage<FsdtLogMessageContent> = createSourceLog(LogLevel.INFO, 'test2')
+    const log2: FsdtMessage<FsdtLogMessageContent> = createSourceLog(LogLevel.INFO, 'test2')
 
     const expectedLog2Received = {
       ...log2,

@@ -6,17 +6,19 @@ FullStack DevTool also holds value for developers working on a single applicatio
 
 With FullStack DevTool, there's no need to delete logs once development is complete. You can keep them, as they will never be visible in production and can be easily sorted as needed.
 
-## Table of Contents
+## 📋 Table of Contents
 
-- [Getting Started](#getting-started)
+- [Getting Started](#🎬-getting-started)
   - [Prerequisites](#prerequisites)
   - [Installation](#installation)
-- [Usage](#usage)
-- [Contributing](#contributing)
-- [License](#license)
-- [Acknowledgments](#acknowledgments)
+- [Usage](#🧪-usage)
+  - [Use the FSDT logger](#use-the-fsdt-logger)
+  - [Configure the FSDT logger](#configure-the-fsdt-logger)
+- [Contributing](#✏️-contributing)
+- [License](#📖-license)
+- [Acknowledgments](#🙏-acknowledgments)
 
-## Getting Started
+## 🎬 Getting Started
 
 To use this project correctly, follow these steps.
 
@@ -39,28 +41,46 @@ $ npm run fullstack-devtool -p <PORT_NUMBER>
 
 **<PORT_NUMBER>** is the port that will be used by the server. ⚠️ **It should be defined**.
 
-## Usage
+## 🧪 Usage
+
+### Use the FSDT logger
 
 ```typescript
-import FsdtLogger from "@fullstack-devtool/sdk";
+import FsdtLogger from '@fullstack-devtool/sdk'
 
-const logger = new FsdtLogger("test-app-1", {
+const logger = new FsdtLogger('test-app-1', {
   port: 1234, // It should be equal to the <PORT_NUMBER>
-  connectionType: "source",
-});
+  connectionType: 'source',
+})
 
-logger.info({ myVar: "myVar" });
+logger.info({ myVar: 'myVar' })
 ```
 
-## Contributing
+### Configure the FSDT logger
+
+```typescript
+type FsdtServerConfig = {
+  port: number // On which the server runs on
+
+  domainName?: string // Default is "localhost"
+
+  connectionType?: 'source' | 'monitor' // Default is source
+
+  useConsole?: boolean // If true, it displays logs in the default console in addition to FSDT console
+
+  disable?: boolean // Disable the connection with the FSDT console (recommanded in production)
+}
+```
+
+## ✏️ Contributing
 
 For contributing, please follow the <a href="https://github.com/FullStack-DevTool/FSDT/blob/main/CONTRIBUTING">Contributing instructions</a> from the repository.
 
-## License
+## 📖 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## Acknowledgments
+## 🙏 Acknowledgments
 
 We would like to express our gratitude to the following individuals and projects for their contributions and inspiration:
 

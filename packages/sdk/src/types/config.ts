@@ -1,6 +1,6 @@
 export type FsdtServerConfig = {
-  domainName?: string; // default is "localhost"
   port: number;
+  domainName?: string; // default is "localhost"
   connectionType?: 'source' | 'monitor';
   useConsole?: boolean;
   disable?: boolean;
