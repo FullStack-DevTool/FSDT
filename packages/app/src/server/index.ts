@@ -1,83 +1,77 @@
-import http from "http";
-import { WebSocketServer } from "ws";
-import connectionManager from "./connection/ConnectionManager";
-import { FsdtConnection } from "./connection/FsdtConnection";
-import { EventType } from "@fullstack-devtool/core";
-import {
-  sendErrorMessage,
-  sendServerToMonitorMessage,
-} from "./utils/sendMessage";
-import { parseMessage } from "./utils/parseMessage";
-import { extractConnectionData } from "./utils/extractConnectionData";
+import 'dotenv/config'
+import http from 'http'
+import { WebSocketServer } from 'ws'
+import connectionManager from './connection/ConnectionManager'
+import { FsdtConnection } from './connection/FsdtConnection'
+import { Any, EventType } from '@fullstack-devtool/core'
+import { sendErrorMessage, sendServerToMonitorMessage } from './utils/sendMessage'
+import { parseMessage } from './utils/parseMessage'
+import { extractConnectionData } from './utils/extractConnectionData'
 
-const HOST_NAME = "localhost";
-const PORT = Number(process.env.FSDT_PORT) || 0; // Get port from environment variable or use 0 to use a random port
+const HOST_NAME = 'localhost'
+const PORT = Number(process.env.FSDT_PORT) || 0 // Get port from environment variable or use 0 to use a random port
 
-function setupHttpServer(res: (value: { port: number }) => void) {
-  const server = http.createServer();
+function setupHttpServer(res: (value: { port: number; server: http.Server }) => void) {
+  const server = http.createServer((_, res) => {
+    res.statusCode = 200
+    res.setHeader('Content-Type', 'text/plain')
+    res.end('Hello World')
+  })
 
   // The port number can be 0, which means that the operating system will assign an available port number for us.
   server.listen(PORT, HOST_NAME, () => {
-    const port = (server.address() as any).port;
-    console.log(`Server running at http://${HOST_NAME}:${port}/`);
-    res({ port });
-  });
+    const port = (server.address() as Any).port
+    console.log(`Server running at http://${HOST_NAME}:${port}/`)
+    res({ port, server })
+  })
 
-  return server;
+  return server
 }
 
 function setupWsServer(server: http.Server) {
   // Setup websocket server
   const wsServer = new WebSocketServer({
     server: server,
-  });
+  })
 
-  wsServer.on("connection", (wsConnection, req) => {
+  wsServer.on('connection', (wsConnection, req) => {
     try {
-      const { connectionName, connectionType } = extractConnectionData(req);
+      const { connectionName, connectionType } = extractConnectionData(req)
 
-      const connection = new FsdtConnection(
-        wsConnection,
-        connectionType,
-        connectionName
-      );
+      const connection = new FsdtConnection(wsConnection, connectionType, connectionName)
 
-      connectionManager.register(connection);
+      connectionManager.register(connection)
 
       // Message handler
-      connection.connection.on("message", (message) => {
+      connection.connection.on('message', (message) => {
         try {
-          const { type, data } = parseMessage(message);
+          const { type, data } = parseMessage(message)
 
           // Send the log to the monitor
           if (type === EventType.LOG) {
-            sendServerToMonitorMessage(
-              connectionManager.monitor,
-              connection,
-              data
-            );
+            sendServerToMonitorMessage(connectionManager.monitor, connection, data)
           }
         } catch (error) {
           // Send error message to the source
-          sendErrorMessage(connection.connection, error.message);
+          sendErrorMessage(connection.connection, error.message)
         }
-      });
+      })
 
       // Close handler
-      connection.connection.on("close", function () {
-        connectionManager.unregister(connection);
-      });
+      connection.connection.on('close', function () {
+        connectionManager.unregister(connection)
+      })
     } catch (error) {
-      console.error(error);
-      sendErrorMessage(wsConnection, error.message);
-      wsConnection.close();
+      console.error(error)
+      sendErrorMessage(wsConnection, error.message)
+      wsConnection.close()
     }
-  });
+  })
 }
 
 export function initServer() {
-  return new Promise<{ port: number }>((res) => {
-    const server = setupHttpServer(res);
-    setupWsServer(server);
-  });
+  return new Promise<{ port: number; server: http.Server }>((res) => {
+    const server = setupHttpServer(res)
+    setupWsServer(server)
+  })
 }

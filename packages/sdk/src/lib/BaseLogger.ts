@@ -1,11 +1,12 @@
 import {
-  EventType,
+  Any,
+  createSourceLog,
   FsdtLogMessageContent,
-  FsdtSourceMessage,
   FsdtServerMessage,
-  LogLevel,
+  FsdtMessage,
   isErrorEvent,
   isSharedLogEvent,
+  LogLevel,
 } from '@fullstack-devtool/core';
 
 import Ws from 'ws';
@@ -18,7 +19,7 @@ const DEFAULT_DOMAIN_NAME = 'localhost';
 export abstract class BaseLogger {
   private _client: Ws | WebSocket | null = null;
   private _isConnected = false;
-  private _waitingQueue: FsdtSourceMessage<FsdtLogMessageContent>[] = [];
+  private _waitingQueue: FsdtMessage<FsdtLogMessageContent>[] = [];
   private _name: string;
   private _config: FsdtServerConfig;
 
@@ -30,7 +31,9 @@ export abstract class BaseLogger {
     this._config = config;
     this._name = name;
 
-    this.connect();
+    if (!this._config.disable) {
+      this.connect();
+    }
   }
   /**
    *
@@ -45,7 +48,7 @@ export abstract class BaseLogger {
     this._onLogReceived = callback;
   }
 
-  protected displayLog(level: LogLevel, log: any) {
+  protected displayLog(level: LogLevel, log: Any) {
     if (this._config.useConsole === false) {
       return;
     }
@@ -66,15 +69,8 @@ export abstract class BaseLogger {
     handler(log);
   }
 
-  protected sendLog(level: LogLevel, log: any) {
-    const logData: FsdtSourceMessage<FsdtLogMessageContent> = {
-      type: EventType.LOG,
-      data: {
-        timestamp: new Date().toUTCString(),
-        level,
-        content: log,
-      },
-    };
+  protected sendLog(level: LogLevel, log: Any) {
+    const logData = createSourceLog(level, log);
 
     // If we are not connected, we push the log to the waiting queue
     if (!this._isConnected || !this._client) {

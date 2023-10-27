@@ -1,19 +1,9 @@
-import {
-  EventType,
-  FsdtErrorMessageContent,
-  FsdtSourceMessage,
-  FsdtServerMessage,
-  FsdtLogMessageContent,
-} from "../types";
+import { EventType, FsdtErrorMessageContent, FsdtLogMessageContent, FsdtMessage, FsdtServerMessage } from '../types'
 
-export function isErrorEvent(
-  event: FsdtSourceMessage
-): event is FsdtServerMessage<FsdtErrorMessageContent> {
-  return event.type === EventType.ERROR;
+export function isErrorEvent(event: FsdtMessage): event is FsdtServerMessage<FsdtErrorMessageContent> {
+  return event.type === EventType.ERROR
 }
 
-export function isSharedLogEvent(
-  event: FsdtSourceMessage
-): event is FsdtServerMessage<FsdtLogMessageContent> {
-  return event.type === EventType.SHARED_LOG;
+export function isSharedLogEvent(event: FsdtMessage): event is FsdtServerMessage<FsdtLogMessageContent> {
+  return event.type === EventType.SHARED_LOG
 }

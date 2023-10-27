@@ -2,50 +2,50 @@ import { ConnectionType } from "@fullstack-devtool/core";
 import { FsdtConnection } from "./FsdtConnection";
 
 class ConnectionManager {
-	private _monitor: FsdtConnection | null = null;
-	private _sources: FsdtConnection[] = [];
+  private _monitor: FsdtConnection | null = null;
+  private _sources: FsdtConnection[] = [];
 
-	register(connection: FsdtConnection) {
-		const type = connection.type;
-		if (type === ConnectionType.MONITOR) {
-			if (this._monitor) {
-				this._monitor.connection.close();
-			}
-			this._monitor = connection;
-		} else if (type === ConnectionType.SOURCE) {
-			this._sources.push(connection);
-		}
-	}
+  register(connection: FsdtConnection) {
+    const type = connection.type;
+    if (type === ConnectionType.MONITOR) {
+      if (this._monitor) {
+        this._monitor.connection.close();
+      }
+      this._monitor = connection;
+    } else if (type === ConnectionType.SOURCE) {
+      this._sources.push(connection);
+    }
+  }
 
-	unregister(connection: FsdtConnection) {
-		if (this._monitor === connection) {
-			this._monitor.connection.close();
-			this._monitor = null;
-		} else {
-			const sourceToRemove = this._sources.find(
-				(source) => source === connection
-			);
-			if (!sourceToRemove) throw new Error("Source not found");
+  unregister(connection: FsdtConnection) {
+    connection.connection.close();
 
-			sourceToRemove.connection.close();
-			this._sources = this._sources.filter((source) => source !== connection);
-		}
-	}
+    if (this._monitor === connection) {
+      this._monitor = null;
+    } else {
+      const sourceToRemove = this._sources.find(
+        (source) => source === connection
+      );
+      if (!sourceToRemove) throw new Error("Source not found");
 
-	getAll() {
-		return {
-			monitor: this._monitor,
-			sources: this._sources,
-		};
-	}
+      this._sources = this._sources.filter((source) => source !== connection);
+    }
+  }
 
-	get monitor() {
-		return this._monitor;
-	}
+  getAll() {
+    return {
+      monitor: this._monitor,
+      sources: this._sources,
+    };
+  }
 
-	get sources() {
-		return this._sources;
-	}
+  get monitor() {
+    return this._monitor;
+  }
+
+  get sources() {
+    return this._sources;
+  }
 }
 
 export default new ConnectionManager();

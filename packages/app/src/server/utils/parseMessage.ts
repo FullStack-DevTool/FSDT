@@ -1,25 +1,13 @@
-import { Message } from "websocket";
-import {
-  safeJsonParse,
-  FsdtSourceMessage,
-  FsdtLogMessageContent,
-  EventType,
-} from "@fullstack-devtool/core";
-import { RawData } from "ws";
+import { EventType, FsdtLogMessageContent, FsdtMessage, safeJsonParse } from '@fullstack-devtool/core'
+import { RawData } from 'ws'
 
-function validateMessageData(
-  message: FsdtSourceMessage<FsdtLogMessageContent>
-) {
+function validateMessageData(message: FsdtMessage<FsdtLogMessageContent>) {
   if (!message.type || !message.data.content || !message.data.timestamp) {
-    throw new Error(
-      "The message should have a type, a data.log and a data.timestamp"
-    );
+    throw new Error('The message should have a type, a data.content and a data.timestamp')
   }
 
   if (!Object.values(EventType).includes(message.type)) {
-    throw new Error(
-      `The message type should be one of ${Object.values(EventType).join(", ")}`
-    );
+    throw new Error(`The message type should be one of ${Object.values(EventType).join(', ')}`)
   }
 }
 
@@ -27,12 +15,11 @@ function validateMessageData(
  * It parses and validate the message received from the client
  */
 export function parseMessage(message: RawData) {
-  const msgContent = message.toString();
-  const parsedMessage =
-    safeJsonParse<FsdtSourceMessage<FsdtLogMessageContent>>(msgContent);
-  if (!parsedMessage) throw new Error("The message should be a valid JSON");
+  const msgContent = message.toString()
+  const parsedMessage = safeJsonParse<FsdtMessage<FsdtLogMessageContent>>(msgContent)
+  if (!parsedMessage) throw new Error('The message should be a valid JSON')
 
-  validateMessageData(parsedMessage);
+  validateMessageData(parsedMessage)
 
-  return parsedMessage;
+  return parsedMessage
 }

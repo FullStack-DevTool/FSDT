@@ -15,8 +15,9 @@
     "test": "run-s test:*",
     "test:spelling": "cspell \"{README.md,.github/*.md,src/**/*.ts}\"",
     "test:lint": "eslint packages/**/src/*.{ts,tsx}",
-    "test:format": "prettier packages/**/src/*.{ts,tsx} --list-different"
-  },
+    "test:format": "prettier packages/**/src/*.{ts,tsx} --list-different",
+		"build": "yarn --cwd packages/app package & yarn --cwd packages/sdk build"
+	},
 	"devDependencies": {
 		"@typescript-eslint/eslint-plugin": "^6.9.0",
 		"@typescript-eslint/parser": "^6.9.0",
@@ -27,6 +28,9 @@
 		"eslint-plugin-functional": "^6.0.0",
 		"eslint-plugin-import": "^2.29.0",
 		"npm-run-all": "^4.1.5",
-		"prettier": "^3.0.3"
+		"prettier": "^3.0.3",
+		"@types/jest": "^29.5.5",
+		"jest": "^29.7.0",
+		"ts-jest": "^29.1.1"
 	}
 }

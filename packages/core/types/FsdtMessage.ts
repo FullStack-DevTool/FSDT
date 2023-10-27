@@ -1,23 +1,24 @@
-import { EventType } from "./EventType";
-import { LogLevel } from "./LogLevel";
+import { EventType } from './EventType'
+import { LogLevel } from './LogLevel'
+import { Any } from './Utils'
 
-export type FsdtSourceMessage<T = any> = {
-  type: EventType;
-  data: T;
-};
+export type FsdtMessage<T = Any> = {
+  type: EventType
+  data: T
+}
 
-export type FsdtServerMessage<T = any> = FsdtSourceMessage<T> & {
-  source: string;
-};
+export type FsdtServerMessage<T = Any> = FsdtMessage<T> & {
+  source: string
+}
 
 export type FsdtLogMessageContent = {
-  content: string;
-  timestamp: string;
-  level: LogLevel;
-  tag?: string;
-};
+  content: Any
+  timestamp: string
+  level: LogLevel
+  tag?: string
+}
 
 export type FsdtErrorMessageContent = {
-  error: string;
-  timestamp: number;
-};
+  error: string
+  timestamp: string
+}
