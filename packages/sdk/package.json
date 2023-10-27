@@ -5,7 +5,10 @@
   "main": "build/main/index.js",
   "typings": "build/main/index.d.ts",
   "module": "build/module/index.js",
-  "repository": "https://github.com/FullStack-DevTool/FSDT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FullStack-DevTool/FSDT.git"
+  },
   "license": "MIT",
   "keywords": [],
   "scripts": {
