@@ -76,10 +76,10 @@ export default function ListView() {
           columnDefs={cols}
           onBodyScroll={(event: BodyScrollEvent<any>) => {
             if (
-              event.top + document.querySelector('.ag-body').offsetHeight ===
-                parseInt(document.querySelector('.ag-center-cols-viewport').style.height) ||
-              event.top + document.querySelector('.ag-body').offsetHeight >=
-                parseInt(document.querySelector('.ag-center-cols-viewport').style.height)
+              event.top + document.querySelector<HTMLElement>('.ag-body').offsetHeight ===
+                parseInt(document.querySelector<HTMLElement>('.ag-center-cols-viewport').style.height) ||
+              event.top + document.querySelector<HTMLElement>('.ag-body').offsetHeight >=
+                parseInt(document.querySelector<HTMLElement>('.ag-center-cols-viewport').style.height)
             ) {
               setStickToBottom(true)
             } else {
