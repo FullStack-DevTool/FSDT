@@ -41,6 +41,9 @@
     "@fullstack-devtool/core": "*",
     "ws": "^8.14.2"
   },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
   "devDependencies": {
     "@istanbuljs/nyc-config-typescript": "^1.0.1",
     "codecov": "^3.5.0",
