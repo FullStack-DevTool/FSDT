@@ -16,6 +16,33 @@ jobs:
       app_release_created: ${{ steps.release-please.outputs['packages/app--release_created'] }}
       sdk_release_created: ${{ steps.release-please.outputs['packages/sdk--release_created'] }}
 
+  publish-app:
+    runs-on: ubuntu-20.04
+    needs: release-please
+    if: ${{needs.release-please.outputs.app_release_created}}
+    steps:
+      - uses: actions/checkout@v4
+
+      # Setup .npmrc file to publish to npm
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+          registry-url: 'https://registry.npmjs.org'
+
+      - run: yarn install --frozen-lockfile
+      # We need to build the SDK since it's used by the app
+      - name: Build SDK and FSDT app
+        run: yarn build
+
+      - name: Publish app
+        run: yarn publish:app
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  publish-sdk:
+    runs-on: ubuntu-20.04
+    needs: release-please
+    if: ${{needs.release-please.outputs.sdk_release_created}}
     steps:
       - uses: actions/checkout@v4
 
@@ -27,19 +54,10 @@ jobs:
 
       - run: yarn install --frozen-lockfile
 
-      - name: Build SDK and FSDT app
-        run: yarn build
-
-      - run: echo ${{secrets.NPM_TOKEN}}
+      - name: Build only SDK
+        run: yarn build:sdk
 
       - name: Publish sdk
-        if: ${{ steps.release.outputs.sdk_release_created }}
         run: yarn publish:sdk
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-      - name: Publish app
-        if: ${{ steps.release.outputs.app_release_created }}
-        run: yarn publish:app
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
