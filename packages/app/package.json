@@ -1,7 +1,7 @@
 {
 	"name": "@fullstack-devtool/app",
 	"productName": "fullstack-devtool",
-	"version": "0.1.0",
+	"version": "0.2.0",
 	"description": "A desktop application to retrieve logs from multiple applications",
 	"main": ".webpack/main",
 	"bin": {
@@ -10,13 +10,13 @@
 	"files": [
 		".webpack",
 		"bin",
-	 	"CHANGELOG.md",
-    "LICENSE",
-    "README.md"
+		"CHANGELOG.md",
+		"LICENSE",
+		"README.md"
 	],
-	 "publishConfig": {
-    "registry": "https://registry.npmjs.org/"
-  },
+	"publishConfig": {
+		"registry": "https://registry.npmjs.org/"
+	},
 	"scripts": {
 		"start": "electron-forge start",
 		"package": "electron-forge package",
@@ -30,7 +30,7 @@
 		"name": "Mathieu",
 		"email": "mathieu.raimbault@hotmail.com"
 	},
-	"repository":{
+	"repository": {
 		"type": "git",
 		"url": "https://github.com/FullStack-DevTool/FSDT"
 	},
