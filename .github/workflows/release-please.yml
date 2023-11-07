@@ -1,13 +1,21 @@
-name: Publish SDK and FSDT app
 on:
-  release:
-    types: [published]
+  push:
+    branches:
+      - main
 
-  workflow_dispatch:
+permissions:
+  contents: write
+  pull-requests: write
+
+name: Run Release Please
 
 jobs:
-  build:
+  release-please:
     runs-on: ubuntu-latest
+    outputs:
+      app_release_created: ${{ steps.release-please.outputs['packages/app--release_created'] }}
+      sdk_release_created: ${{ steps.release-please.outputs['packages/sdk--release_created'] }}
+
     steps:
       - uses: actions/checkout@v4
 
@@ -25,11 +33,13 @@ jobs:
       - run: echo ${{secrets.NPM_TOKEN}}
 
       - name: Publish sdk
+        if: ${{ steps.release.outputs.sdk_release_created }}
         run: yarn publish:sdk
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Publish app
+        if: ${{ steps.release.outputs.app_release_created }}
         run: yarn publish:app
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
