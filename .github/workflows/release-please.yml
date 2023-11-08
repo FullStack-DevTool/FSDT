@@ -20,7 +20,7 @@ jobs:
         id: release
         with:
           command: manifest
-          token: ${{secrets.GITHUB_TOKEN}}
+          token: ${{secrets.ACCESS_TOKEN}}
           default-branch: main
 
   publish-app:
