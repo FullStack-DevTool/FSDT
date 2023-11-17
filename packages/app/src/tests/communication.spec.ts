@@ -63,6 +63,7 @@ describe('Communication between the sources and the monitor through the server',
       ...log1,
       source: 'source1',
       type: EventType.SHARED_LOG,
+      id: 1,
     }
     const log2: FsdtMessage<FsdtLogMessageContent> = createSourceLog(LogLevel.INFO, 'test2')
 
@@ -70,6 +71,7 @@ describe('Communication between the sources and the monitor through the server',
       ...log2,
       source: 'source2',
       type: EventType.SHARED_LOG,
+      id: 2,
     }
 
     // Setup the listeners

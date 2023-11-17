@@ -1,26 +1,29 @@
 import { useMessageStore } from '../stores/messageStore'
+import { useSearchStore } from '../stores/searchStore'
 import { useEffect, useRef, useState } from 'react'
 import { BodyScrollEvent, ColDef } from 'ag-grid-community'
-import { FsdtServerMessage } from '@fullstack-devtool/core'
+import { Any, FsdtServerMessage } from '@fullstack-devtool/core'
 import styled from '@emotion/styled'
 import { AgGridReact } from 'ag-grid-react'
 
 import 'ag-grid-community/styles/ag-grid.css'
 import 'ag-grid-community/styles/ag-theme-material.min.css'
 import { MdOutlineVerticalAlignBottom } from 'react-icons/md'
-import { useSearchStore } from '../stores/searchStore'
+import { LogCell } from '../components/grid/LogCell'
 
 const cols: ColDef<FsdtServerMessage>[] = [
-  { headerName: 'Source', field: 'source', width: 100 },
+  { headerName: 'Source', field: 'source', flex: 1, resizable: true },
   {
     headerName: 'Content',
     field: 'data.content',
-    cellRenderer: (params: { value: any }) => JSON.stringify(params.value),
-    flex: 1,
+    cellRenderer: LogCell,
+    flex: 3,
+    autoHeight: true,
+    resizable: true,
   },
-  { headerName: 'Time', field: 'data.timestamp', getQuickFilterText: () => '' },
-  { headerName: 'Level', field: 'data.level', width: 100 },
-  { headerName: 'Tag', field: 'data.tag' },
+  { headerName: 'Time', flex: 2, field: 'data.timestamp', resizable: true, getQuickFilterText: () => '' },
+  { headerName: 'Level', field: 'data.level', flex: 1, resizable: true },
+  { headerName: 'Tag', field: 'data.tag', flex: 1, resizable: true },
 ]
 
 const StyledListRenderer = styled.div`
@@ -75,6 +78,19 @@ export default function ListView() {
     }
   }
 
+  const onBodyScroll = (event: BodyScrollEvent<Any>) => {
+    if (
+      event.top + document.querySelector<HTMLElement>('.ag-body').offsetHeight ===
+        parseInt(document.querySelector<HTMLElement>('.ag-center-cols-viewport').style.height) ||
+      event.top + document.querySelector<HTMLElement>('.ag-body').offsetHeight >=
+        parseInt(document.querySelector<HTMLElement>('.ag-center-cols-viewport').style.height)
+    ) {
+      setStickToBottom(true)
+    } else {
+      setStickToBottom(false)
+    }
+  }
+
   return (
     <>
       <StyledListRenderer className="ag-theme-material">
@@ -82,18 +98,8 @@ export default function ListView() {
           ref={gridRef}
           rowData={messages}
           columnDefs={cols}
-          onBodyScroll={(event: BodyScrollEvent<any>) => {
-            if (
-              event.top + document.querySelector<HTMLElement>('.ag-body').offsetHeight ===
-                parseInt(document.querySelector<HTMLElement>('.ag-center-cols-viewport').style.height) ||
-              event.top + document.querySelector<HTMLElement>('.ag-body').offsetHeight >=
-                parseInt(document.querySelector<HTMLElement>('.ag-center-cols-viewport').style.height)
-            ) {
-              setStickToBottom(true)
-            } else {
-              setStickToBottom(false)
-            }
-          }}
+          getRowId={(params) => params.data.id}
+          onBodyScroll={onBodyScroll}
           suppressScrollOnNewData
         />
       </StyledListRenderer>

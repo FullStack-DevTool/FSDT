@@ -8,6 +8,7 @@ export type FsdtMessage<T = Any> = {
 }
 
 export type FsdtServerMessage<T = Any> = FsdtMessage<T> & {
+  id: number
   source: string
 }
 
