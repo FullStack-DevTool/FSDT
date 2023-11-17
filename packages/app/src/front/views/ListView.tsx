@@ -1,7 +1,7 @@
 import { useMessageStore } from '../stores/messageStore'
 import { useSearchStore } from '../stores/searchStore'
 import { useEffect, useRef, useState } from 'react'
-import { BodyScrollEvent, ColDef } from 'ag-grid-community'
+import { BodyScrollEvent, ColDef, RowClassParams, RowStyle } from 'ag-grid-community'
 import { Any, FsdtServerMessage } from '@fullstack-devtool/core'
 import styled from '@emotion/styled'
 import { AgGridReact } from 'ag-grid-react'
@@ -48,6 +48,19 @@ const StickToBottomButton = styled.button<{ active: boolean }>`
     opacity: 0.8;
   }
 `
+
+function rowStyle(params: RowClassParams<FsdtServerMessage>): RowStyle {
+  switch (params.data.data.level) {
+    case 'info':
+      return { backgroundColor: '#ddf7fb' }
+    case 'debug':
+      return { backgroundColor: '#ececec' }
+    case 'warn':
+      return { backgroundColor: '#fef6d5' }
+    case 'error':
+      return { backgroundColor: '#fcebeb' }
+  }
+}
 
 export default function ListView() {
   const gridRef = useRef(null)
@@ -101,6 +114,7 @@ export default function ListView() {
           getRowId={(params) => params.data.id}
           onBodyScroll={onBodyScroll}
           suppressScrollOnNewData
+          getRowStyle={rowStyle}
         />
       </StyledListRenderer>
       <StickToBottomButton active={stickToBottom} onClick={handleClick}>
