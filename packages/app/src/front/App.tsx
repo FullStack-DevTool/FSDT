@@ -8,7 +8,6 @@ import Content from './components/Content'
 import FsdtLogger from '@fullstack-devtool/sdk'
 import { getPort } from './utils/server.service'
 import { useMessageStore } from './stores/messageStore'
-import { GlobalStyles } from './components/GlobalStyles'
 
 const Main = styled.div`
   flex: 1;
@@ -31,7 +30,6 @@ getPort().then((port) => {
 export function App() {
   return (
     <AppContainer>
-      <GlobalStyles />
       <Sidebar />
       <Main>
         <Header />

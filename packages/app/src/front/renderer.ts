@@ -26,5 +26,7 @@
  * ```
  */
 
+import 'ag-grid-community/styles/ag-grid.css'
+import 'ag-grid-community/styles/ag-theme-material.min.css'
 import './index.css'
 import './App'
