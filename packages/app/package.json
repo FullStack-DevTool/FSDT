@@ -10,13 +10,13 @@
 	"files": [
 		".webpack",
 		"bin",
-	 	"CHANGELOG.md",
-    "LICENSE",
-    "README.md"
+		"CHANGELOG.md",
+		"LICENSE",
+		"README.md"
 	],
-	 "publishConfig": {
-    "registry": "https://registry.npmjs.org/"
-  },
+	"publishConfig": {
+		"registry": "https://registry.npmjs.org/"
+	},
 	"scripts": {
 		"start": "electron-forge start",
 		"package": "electron-forge package",
@@ -30,7 +30,7 @@
 		"name": "Mathieu",
 		"email": "mathieu.raimbault@hotmail.com"
 	},
-	"repository":{
+	"repository": {
 		"type": "git",
 		"url": "https://github.com/FullStack-DevTool/FSDT"
 	},
@@ -72,6 +72,7 @@
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",
 		"react-icons": "^4.11.0",
+		"react-json-view": "^1.21.3",
 		"ws": "^8.14.2",
 		"zustand": "^4.4.3"
 	}

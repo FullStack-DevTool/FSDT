@@ -19,11 +19,12 @@ export function createSourceLog(level: LogLevel, content: Any): FsdtMessage<Fsdt
   }
 }
 
-export function createServerLog(source: string, data: Any): FsdtServerMessage {
+export function createServerLog(source: string, data: Any, id: number): FsdtServerMessage {
   return {
     type: EventType.SHARED_LOG,
     source: source,
     data,
+    id,
   }
 }
 
