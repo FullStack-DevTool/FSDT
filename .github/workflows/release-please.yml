@@ -17,7 +17,7 @@ jobs:
       sdk_release_created: ${{ steps.release-please.outputs['packages/sdk--release_created'] }}
     steps:
       - uses: google-github-actions/release-please-action@v3
-        id: release
+        id: release-please
         with:
           command: manifest
           token: ${{secrets.ACCESS_TOKEN}}
