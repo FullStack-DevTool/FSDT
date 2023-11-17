@@ -8,6 +8,7 @@ import { AgGridReact } from 'ag-grid-react'
 import 'ag-grid-community/styles/ag-grid.css'
 import 'ag-grid-community/styles/ag-theme-material.min.css'
 import { MdOutlineVerticalAlignBottom } from 'react-icons/md'
+import { useSearchStore } from '../stores/searchStore'
 
 const cols: ColDef<FsdtServerMessage>[] = [
   { headerName: 'Source', field: 'source', width: 100 },
@@ -17,7 +18,7 @@ const cols: ColDef<FsdtServerMessage>[] = [
     cellRenderer: (params: { value: any }) => JSON.stringify(params.value),
     flex: 1,
   },
-  { headerName: 'Time', field: 'data.timestamp' },
+  { headerName: 'Time', field: 'data.timestamp', getQuickFilterText: () => '' },
   { headerName: 'Level', field: 'data.level', width: 100 },
   { headerName: 'Tag', field: 'data.tag' },
 ]
@@ -48,6 +49,7 @@ const StickToBottomButton = styled.button<{ active: boolean }>`
 export default function ListView() {
   const gridRef = useRef(null)
   const messages = useMessageStore((state) => state.messages)
+  const search = useSearchStore((state) => state.search)
   const [stickToBottom, setStickToBottom] = useState(true)
 
   useEffect(() => {
@@ -57,6 +59,12 @@ export default function ListView() {
       })
     }
   }, [messages])
+
+  useEffect(() => {
+    if (gridRef.current && gridRef.current.api) {
+      gridRef.current.api.setQuickFilter(search)
+    }
+  }, [search])
 
   const handleClick = () => {
     if (stickToBottom) {
