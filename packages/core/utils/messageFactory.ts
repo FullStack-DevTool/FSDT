@@ -13,7 +13,7 @@ export function createSourceLog(level: LogLevel, content: Any): FsdtMessage<Fsdt
     type: EventType.LOG,
     data: {
       content,
-      timestamp: new Date().toUTCString(),
+      timestamp: new Date().toISOString(),
       level,
     },
   }
