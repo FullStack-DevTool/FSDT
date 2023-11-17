@@ -11,9 +11,5 @@ const StyledDiv = styled.div`
 `
 
 export const LogCell = ({ value }: LogCellProps) => {
-  return (
-    <StyledDiv>
-      <ReactJson src={value} collapsed />
-    </StyledDiv>
-  )
+  return <StyledDiv>{typeof value === 'object' ? <ReactJson src={value} collapsed /> : value}</StyledDiv>
 }
