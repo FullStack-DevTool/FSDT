@@ -14,6 +14,15 @@ import { LogCell } from '../components/grid/LogCell'
 const cols: ColDef<FsdtServerMessage>[] = [
   { headerName: 'Source', field: 'source', flex: 1, resizable: true },
   {
+    headerName: 'Time',
+    flex: 2,
+    field: 'data.timestamp',
+    resizable: true,
+    getQuickFilterText: () => '',
+    cellRenderer: ({ value }: { value: string }) => new Date(value).toLocaleTimeString(),
+  },
+  { headerName: 'Level', field: 'data.level', flex: 1, resizable: true },
+  {
     headerName: 'Content',
     field: 'data.content',
     cellRenderer: LogCell,
@@ -21,8 +30,6 @@ const cols: ColDef<FsdtServerMessage>[] = [
     autoHeight: true,
     resizable: true,
   },
-  { headerName: 'Time', flex: 2, field: 'data.timestamp', resizable: true, getQuickFilterText: () => '' },
-  { headerName: 'Level', field: 'data.level', flex: 1, resizable: true },
   { headerName: 'Tag', field: 'data.tag', flex: 1, resizable: true },
 ]
 
