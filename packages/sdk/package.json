@@ -1,6 +1,6 @@
 {
   "name": "@fullstack-devtool/sdk",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A sdk to communicate with the Fullstack Devtool server",
   "typings": "dist/index.esm.d.ts",
   "main": "./dist/index.cjs.js",
