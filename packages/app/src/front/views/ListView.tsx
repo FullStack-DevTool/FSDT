@@ -6,8 +6,6 @@ import { Any, FsdtServerMessage } from '@fullstack-devtool/core'
 import styled from '@emotion/styled'
 import { AgGridReact } from 'ag-grid-react'
 
-import 'ag-grid-community/styles/ag-grid.css'
-import 'ag-grid-community/styles/ag-theme-material.min.css'
 import { MdOutlineVerticalAlignBottom } from 'react-icons/md'
 import { LogCell } from '../components/grid/LogCell'
 
