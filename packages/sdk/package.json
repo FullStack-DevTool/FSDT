@@ -59,8 +59,7 @@
     "@fullstack-devtool/core": "*"
   },
   "files": [
-    "build/main",
-    "build/module",
+    "dist",
     "!**/*.spec.*",
     "!**/*.json",
     "CHANGELOG.md",
