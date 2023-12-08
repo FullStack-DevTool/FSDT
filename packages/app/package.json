@@ -65,6 +65,7 @@
 		"@emotion/react": "^11.11.1",
 		"@emotion/styled": "^11.11.0",
 		"@fullstack-devtool/sdk": "*",
+		"@popperjs/core": "^2.11.8",
 		"ag-grid-community": "^30.2.0",
 		"ag-grid-react": "^30.2.0",
 		"dotenv": "^16.3.1",
@@ -74,6 +75,7 @@
 		"react-dom": "^18.2.0",
 		"react-icons": "^4.11.0",
 		"react-json-view": "^1.21.3",
+		"react-popper": "^2.3.0",
 		"ws": "^8.14.2",
 		"zustand": "^4.4.3"
 	}

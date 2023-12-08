@@ -3,4 +3,5 @@ import { contextBridge, ipcRenderer } from 'electron'
 
 contextBridge.exposeInMainWorld('AggregatorServer', {
   getPort: () => ipcRenderer.invoke('get-port'),
+  getAppVersion: () => ipcRenderer.invoke('get-app-version'),
 })

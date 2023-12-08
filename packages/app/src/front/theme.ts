@@ -1,5 +1,3 @@
-import { Interpolation } from '@emotion/react'
-
 export const theme = {
   colors: {
     text: '#000000',
@@ -9,6 +7,7 @@ export const theme = {
     activeBorder: '#D132F9',
     background: '#FFFFFF',
     hoverButton: 'rgba(69,164,251, 0.13)',
+    selectedButton: 'rgba(69,164,251, 0.33)',
   },
   fontSize: {
     small: '14px',
@@ -26,6 +25,7 @@ export const theme = {
   margin: {
     small: '8px',
     medium: '16px',
+    large: '24px',
   },
 }
 

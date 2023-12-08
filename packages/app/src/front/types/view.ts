@@ -1,1 +1,1 @@
-export type LogView = "List" | "Column" | "Accordion";
+export type LogView = 'List' | 'Table' | 'Accordion'

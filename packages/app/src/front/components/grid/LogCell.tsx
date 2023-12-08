@@ -6,5 +6,17 @@ type LogCellProps = {
 }
 
 export const LogCell = ({ value }: LogCellProps) => {
-  return <div>{typeof value === 'object' ? <ReactJson src={value} collapsed /> : value}</div>
+  return <div>{typeof value === 'object' ? (
+    <ReactJson
+      src={value}
+      displayObjectSize={false}
+      displayDataTypes={false}
+      quotesOnKeys={false}
+      collapsed={1}
+      name={null}
+      iconStyle={'square'}
+    />
+  ) : (
+    value
+  )}</div>
 }
