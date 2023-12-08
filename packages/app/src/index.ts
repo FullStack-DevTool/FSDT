@@ -20,14 +20,21 @@ const createWindow = async (): Promise<void> => {
     webPreferences: {
       preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
     },
+    titleBarStyle: 'hidden',
   })
 
   // Initialize the aggregator server
   const { port } = await initServer()
 
+  const appVersion = app.getVersion()
+
   // Expose the aggregator server port to the renderer process
   ipcMain.handle('get-port', () => {
     return port
+  })
+
+  ipcMain.handle('get-app-version', () => {
+    return appVersion
   })
 
   // and load the index.html of the app.

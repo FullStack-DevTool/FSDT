@@ -1,13 +1,12 @@
 import { useMessageStore } from '../stores/messageStore'
-import { useSearchStore } from '../stores/searchStore'
 import { useEffect, useRef, useState } from 'react'
 import { BodyScrollEvent, ColDef } from 'ag-grid-community'
 import { Any, FsdtServerMessage } from '@fullstack-devtool/core'
 import styled from '@emotion/styled'
 import { AgGridReact } from 'ag-grid-react'
-
 import { MdOutlineVerticalAlignBottom } from 'react-icons/md'
 import { LogCell } from '../components/grid/LogCell'
+import { useFilters } from '../stores/useFilters'
 
 const cols: ColDef<FsdtServerMessage>[] = [
   {
@@ -67,7 +66,7 @@ const StickToBottomButton = styled.button<{ active: boolean }>`
 export default function ListView() {
   const gridRef = useRef(null)
   const messages = useMessageStore((state) => state.messages)
-  const search = useSearchStore((state) => state.search)
+  const search = useFilters((state) => state.search)
   const [stickToBottom, setStickToBottom] = useState(true)
 
   useEffect(() => {
