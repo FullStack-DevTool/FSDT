@@ -27,6 +27,5 @@
  */
 
 import 'ag-grid-community/styles/ag-grid.css'
-import 'ag-grid-community/styles/ag-theme-material.min.css'
-import './index.css'
+import './assets/styles/font-face.css'
 import './App'
