@@ -4,8 +4,9 @@ import Content from './components/section/Content'
 import FsdtLogger from '@fullstack-devtool/sdk'
 import { getPort } from './utils/server.service'
 import { useMessageStore } from './stores/messageStore'
-import { globalStyles, theme } from './theme'
+import { theme } from './theme'
 import { Global, ThemeProvider } from '@emotion/react'
+import { globalStyle } from './utils/globalStyle'
 
 getPort().then((port) => {
   console.log('port', port)
@@ -22,7 +23,7 @@ getPort().then((port) => {
 export function App() {
   return (
     <ThemeProvider theme={theme}>
-      <Global styles={globalStyles} />
+      <Global styles={globalStyle} />
       <Header />
       <Content />
     </ThemeProvider>
