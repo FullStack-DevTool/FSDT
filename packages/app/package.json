@@ -36,7 +36,6 @@
 	},
 	"license": "MIT",
 	"devDependencies": {
-		"@fullstack-devtool/core": "*",
 		"@babel/core": "^7.22.20",
 		"@babel/preset-react": "^7.22.15",
 		"@electron-forge/cli": "^6.4.2",
@@ -46,20 +45,22 @@
 		"@electron-forge/maker-zip": "^6.4.2",
 		"@electron-forge/plugin-auto-unpack-natives": "^6.4.2",
 		"@electron-forge/plugin-webpack": "^6.4.2",
+		"@fullstack-devtool/core": "*",
 		"@types/react": "^18.2.22",
 		"@types/react-dom": "^18.2.7",
 		"@types/websocket": "^1.0.7",
 		"@vercel/webpack-asset-relocator-loader": "1.7.3",
 		"babel-loader": "^9.1.3",
 		"css-loader": "^6.0.0",
+		"electron": "26.2.1",
+		"file-loader": "^6.2.0",
 		"fork-ts-checker-webpack-plugin": "^7.2.13",
 		"node-loader": "^2.0.0",
 		"nodemon": "^3.0.1",
 		"style-loader": "^3.0.0",
 		"ts-loader": "^9.2.2",
 		"ts-node": "^10.0.0",
-		"typescript": "~4.5.4",
-		"electron": "26.2.1"
+		"typescript": "~4.5.4"
 	},
 	"dependencies": {
 		"@emotion/react": "^11.11.1",
@@ -68,13 +69,13 @@
 		"ag-grid-community": "^30.2.0",
 		"ag-grid-react": "^30.2.0",
 		"dotenv": "^16.3.1",
+		"electron": "26.2.1",
 		"electron-squirrel-startup": "^1.0.0",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",
 		"react-icons": "^4.11.0",
 		"react-json-view": "^1.21.3",
 		"ws": "^8.14.2",
-		"zustand": "^4.4.3",
-		"electron": "26.2.1"
+		"zustand": "^4.4.3"
 	}
 }

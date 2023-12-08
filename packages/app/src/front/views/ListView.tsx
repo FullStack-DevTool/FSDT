@@ -1,7 +1,7 @@
 import { useMessageStore } from '../stores/messageStore'
 import { useSearchStore } from '../stores/searchStore'
 import { useEffect, useRef, useState } from 'react'
-import { BodyScrollEvent, ColDef, RowClassParams, RowStyle } from 'ag-grid-community'
+import { BodyScrollEvent, ColDef } from 'ag-grid-community'
 import { Any, FsdtServerMessage } from '@fullstack-devtool/core'
 import styled from '@emotion/styled'
 import { AgGridReact } from 'ag-grid-react'
@@ -10,25 +10,22 @@ import { MdOutlineVerticalAlignBottom } from 'react-icons/md'
 import { LogCell } from '../components/grid/LogCell'
 
 const cols: ColDef<FsdtServerMessage>[] = [
-  { headerName: 'Source', field: 'source', flex: 1, resizable: true },
   {
-    headerName: 'Time',
-    flex: 2,
-    field: 'data.timestamp',
-    resizable: true,
-    getQuickFilterText: () => '',
-    cellRenderer: ({ value }: { value: string }) => new Date(value).toLocaleTimeString(),
-  },
-  { headerName: 'Level', field: 'data.level', flex: 1, resizable: true },
-  {
-    headerName: 'Content',
     field: 'data.content',
+    flex: 1,
     cellRenderer: LogCell,
-    flex: 3,
     autoHeight: true,
     resizable: true,
   },
-  { headerName: 'Tag', field: 'data.tag', flex: 1, resizable: true },
+  { field: 'source', width: 100, resizable: true },
+  {
+    field: 'data.timestamp',
+    width: 100,
+    resizable: true,
+    getQuickFilterText: () => '',
+    cellRenderer: ({ value }: { value: string }) => new Date(value).toLocaleTimeString(),
+  } /*,
+  { field: 'data.tag', width: 100, resizable: true },*/,
 ]
 
 const StyledListRenderer = styled.div`
@@ -54,7 +51,7 @@ const StickToBottomButton = styled.button<{ active: boolean }>`
   }
 `
 
-function rowStyle(params: RowClassParams<FsdtServerMessage>): RowStyle {
+/*function rowStyle(params: RowClassParams<FsdtServerMessage>): RowStyle {
   switch (params.data.data.level) {
     case 'info':
       return { backgroundColor: '#ddf7fb' }
@@ -65,7 +62,7 @@ function rowStyle(params: RowClassParams<FsdtServerMessage>): RowStyle {
     case 'error':
       return { backgroundColor: '#fcebeb' }
   }
-}
+}*/
 
 export default function ListView() {
   const gridRef = useRef(null)
@@ -119,7 +116,13 @@ export default function ListView() {
           getRowId={(params) => params.data.id}
           onBodyScroll={onBodyScroll}
           suppressScrollOnNewData
-          getRowStyle={rowStyle}
+          suppressHorizontalScroll
+          suppressCellFocus
+          rowSelection="single"
+          gridOptions={{
+            rowHeight: 45,
+          }}
+          /*getRowStyle={rowStyle}*/
         />
       </StyledListRenderer>
       <StickToBottomButton active={stickToBottom} onClick={handleClick}>

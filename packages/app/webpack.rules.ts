@@ -1,6 +1,12 @@
-import type { ModuleOptions } from 'webpack';
+import type { ModuleOptions } from 'webpack'
+import * as path from 'path'
 
 export const rules: Required<ModuleOptions>['rules'] = [
+  {
+    test: /\.(scss|sass)$/i,
+    include: [path.resolve(__dirname, 'node_modules'), path.resolve(__dirname, 'path/to/imported/file/dir')],
+    use: ['style-loader', 'css-loader', 'sass-loader'],
+  },
   // Add support for native node modules
   {
     // We're specifying native_modules in the test because the asset relocator loader generates a
@@ -28,4 +34,4 @@ export const rules: Required<ModuleOptions>['rules'] = [
       },
     },
   },
-];
+]

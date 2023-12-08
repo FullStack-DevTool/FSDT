@@ -1,19 +1,11 @@
 import { createRoot } from 'react-dom/client'
-import styled from '@emotion/styled'
-
-import AppContainer from './components/AppContainer'
-import Sidebar from './components/section/Sidebar'
 import Header from './components/section/Header'
-import Content from './components/Content'
+import Content from './components/section/Content'
 import FsdtLogger from '@fullstack-devtool/sdk'
 import { getPort } from './utils/server.service'
 import { useMessageStore } from './stores/messageStore'
-
-const Main = styled.div`
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-`
+import { globalStyles, theme } from './theme'
+import { Global, ThemeProvider } from '@emotion/react'
 
 getPort().then((port) => {
   console.log('port', port)
@@ -29,13 +21,11 @@ getPort().then((port) => {
 
 export function App() {
   return (
-    <AppContainer>
-      <Sidebar />
-      <Main>
-        <Header />
-        <Content />
-      </Main>
-    </AppContainer>
+    <ThemeProvider theme={theme}>
+      <Global styles={globalStyles} />
+      <Header />
+      <Content />
+    </ThemeProvider>
   )
 }
 
