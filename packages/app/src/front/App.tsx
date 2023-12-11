@@ -6,7 +6,7 @@ import { getAppVersion, getPort } from './utils/server.service'
 import { useMessageStore } from './stores/messageStore'
 import { theme } from './theme'
 import { Global, ThemeProvider } from '@emotion/react'
-import { globalStyle } from './utils/globalStyle'
+import { globalStyleCss } from './utils/globalStyle'
 import { Filters } from './components/section/Filters'
 import { useApp } from './stores/useApp'
 
@@ -26,8 +26,9 @@ getAppVersion().then((version) => {
 })
 
 export function App() {
-  return (<>
-      <Global styles={globalStyle} />
+  return (
+    <>
+      <Global styles={globalStyleCss} />
       <Header />
       <Filters />
       <Content />

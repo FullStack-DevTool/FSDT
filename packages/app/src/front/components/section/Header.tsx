@@ -21,6 +21,7 @@ const TitleContainer = styled.div`
 
 const Title = styled.span`
   font-size: ${(props) => props.theme.fontSize.small};
+  font-family: 'Lexend';
 `
 
 const ViewsListContainer = styled.div`
