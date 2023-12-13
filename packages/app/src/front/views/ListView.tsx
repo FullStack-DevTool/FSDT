@@ -110,7 +110,7 @@ export default function ListView() {
 
   const filteredMessages = useMemo(() => {
     return messages.filter((message) => selectedLevels.includes(message.data.level))
-  }, [])
+  }, [messages, selectedLevels])
 
   return (
     <>
