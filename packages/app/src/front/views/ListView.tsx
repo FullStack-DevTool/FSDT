@@ -1,5 +1,5 @@
 import { useMessageStore } from '../stores/messageStore'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { BodyScrollEvent, ColDef } from 'ag-grid-community'
 import { Any, FsdtServerMessage } from '@fullstack-devtool/core'
 import styled from '@emotion/styled'
@@ -108,7 +108,9 @@ export default function ListView() {
     }
   }
 
-  const filteredMessages = messages.filter((message) => selectedLevels.includes(message.data.level))
+  const filteredMessages = useMemo(() => {
+    return messages.filter((message) => selectedLevels.includes(message.data.level))
+  }, [])
 
   return (
     <>
