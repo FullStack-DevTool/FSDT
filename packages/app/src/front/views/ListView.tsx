@@ -15,6 +15,12 @@ const cols: ColDef<FsdtServerMessage>[] = [
     cellRenderer: LogCell,
     autoHeight: true,
     resizable: true,
+    filterValueGetter: (params) => {
+      if (typeof params.data === 'object') {
+        return JSON.stringify(params.data)
+      }
+      return params
+    },
   },
   { field: 'source', width: 100, resizable: true },
   {
@@ -50,18 +56,18 @@ const StickToBottomButton = styled.button<{ active: boolean }>`
   }
 `
 
-/*function rowStyle(params: RowClassParams<FsdtServerMessage>): RowStyle {
-  switch (params.data.data.level) {
-    case 'info':
-      return { backgroundColor: '#ddf7fb' }
-    case 'debug':
-      return { backgroundColor: '#ececec' }
-    case 'warn':
-      return { backgroundColor: '#fef6d5' }
-    case 'error':
-      return { backgroundColor: '#fcebeb' }
-  }
-}*/
+// function rowStyle(params: RowClassParams<FsdtServerMessage>): RowStyle {
+//   switch (params.data.data.level) {
+//     case 'info':
+//       return { backgroundColor: '#ddf7fb' }
+//     case 'debug':
+//       return { backgroundColor: '#ececec' }
+//     case 'warn':
+//       return { backgroundColor: '#fef6d5' }
+//     case 'error':
+//       return { backgroundColor: '#fcebeb' }
+//   }
+// }
 
 export default function ListView() {
   const gridRef = useRef(null)
@@ -117,6 +123,7 @@ export default function ListView() {
           suppressScrollOnNewData
           suppressHorizontalScroll
           suppressCellFocus
+          // getRowStyle={rowStyle}
           rowSelection="single"
           gridOptions={{
             rowHeight: 45,

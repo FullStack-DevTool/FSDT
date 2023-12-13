@@ -1,6 +1,6 @@
 import { FsdtLogMessageContent } from '@fullstack-devtool/core'
-import ReactJson from 'react-json-view'
 import styled from '@emotion/styled'
+import { ObjectView } from '../ObjectView'
 
 type LogCellProps = {
   value: FsdtLogMessageContent
@@ -14,21 +14,5 @@ const StyledLogCell = styled.div`
 `
 
 export const LogCell = ({ value }: LogCellProps) => {
-  return (
-    <StyledLogCell>
-      {typeof value === 'object' ? (
-        <ReactJson
-          src={value}
-          displayObjectSize={false}
-          displayDataTypes={false}
-          quotesOnKeys={false}
-          collapsed={1}
-          name={null}
-          iconStyle={'square'}
-        />
-      ) : (
-        value
-      )}
-    </StyledLogCell>
-  )
+  return <StyledLogCell>{typeof value === 'object' ? <ObjectView value={value} /> : value}</StyledLogCell>
 }
