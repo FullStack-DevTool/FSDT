@@ -13,6 +13,7 @@ const ViewButton = styled.button`
   background: none;
   border: none;
   display: inline-flex;
+  justify-content: center;
   align-items: center;
   gap: ${(props) => props.theme.margin.small};
   cursor: pointer;

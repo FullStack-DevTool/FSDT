@@ -1,5 +1,5 @@
 import { useMessageStore } from '../stores/messageStore'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { BodyScrollEvent, ColDef } from 'ag-grid-community'
 import { Any, FsdtServerMessage } from '@fullstack-devtool/core'
 import styled from '@emotion/styled'
@@ -71,9 +71,12 @@ const StickToBottomButton = styled.button<{ active: boolean }>`
 
 export default function ListView() {
   const gridRef = useRef(null)
-  const messages = useMessageStore((state) => state.messages)
-  const search = useFilters((state) => state.search)
   const [stickToBottom, setStickToBottom] = useState(true)
+  const messages = useMessageStore((state) => state.messages)
+  const { selectedLevels, search } = useFilters((state) => ({
+    selectedLevels: state.selectedLevels,
+    search: state.search,
+  }))
 
   useEffect(() => {
     if (gridRef.current && gridRef.current.api && stickToBottom) {
@@ -111,12 +114,16 @@ export default function ListView() {
     }
   }
 
+  const filteredMessages = useMemo(() => {
+    return messages.filter((message) => selectedLevels.includes(message.data.level))
+  }, [messages, selectedLevels])
+
   return (
     <>
       <StyledListRenderer className="ag-theme-material">
         <AgGridReact
           ref={gridRef}
-          rowData={messages}
+          rowData={filteredMessages}
           columnDefs={cols}
           getRowId={(params) => params.data.id}
           onBodyScroll={onBodyScroll}
