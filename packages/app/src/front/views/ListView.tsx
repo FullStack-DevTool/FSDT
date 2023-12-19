@@ -7,8 +7,14 @@ import { AgGridReact } from 'ag-grid-react'
 import { MdOutlineVerticalAlignBottom } from 'react-icons/md'
 import { LogCell } from '../components/grid/LogCell'
 import { useFilters } from '../stores/useFilters'
+import { LevelCell } from '../components/grid/LevelCell'
 
 const cols: ColDef<FsdtServerMessage>[] = [
+  {
+    field: 'data.level',
+    width: 30,
+    cellRenderer: LevelCell,
+  },
   {
     field: 'data.content',
     flex: 1,
