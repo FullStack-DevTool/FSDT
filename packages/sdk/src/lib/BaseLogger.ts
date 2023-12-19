@@ -69,8 +69,8 @@ export abstract class BaseLogger {
     handler(log);
   }
 
-  protected sendLog(level: LogLevel, log: Any) {
-    const logData = createSourceLog(level, log);
+  protected sendLog(level: LogLevel, log: Any, tag?: string) {
+    const logData = createSourceLog(level, log, tag);
 
     // If we are not connected, we push the log to the waiting queue
     if (!this._isConnected || !this._client) {

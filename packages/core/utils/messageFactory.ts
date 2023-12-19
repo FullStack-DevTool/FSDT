@@ -8,13 +8,14 @@ import {
   LogLevel,
 } from '../types'
 
-export function createSourceLog(level: LogLevel, content: Any): FsdtMessage<FsdtLogMessageContent> {
+export function createSourceLog(level: LogLevel, content: Any, tag?: string): FsdtMessage<FsdtLogMessageContent> {
   return {
     type: EventType.LOG,
     data: {
       content,
       timestamp: new Date().toISOString(),
       level,
+      tag,
     },
   }
 }
