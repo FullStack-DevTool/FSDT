@@ -30,14 +30,17 @@ const SelectWrapper = styled.div`
 `
 
 export function Filters() {
-  const { selectedLevels, toggleLevel, selectedSources, toggleSource, search, setSearch } = useFilters((state) => ({
-    selectedLevels: state.selectedLevels,
-    toggleLevel: state.toggleLevel,
-    selectedSources: state.selectedSources,
-    toggleSource: state.toggleSource,
-    search: state.search,
-    setSearch: state.setSearch,
-  }))
+  const { selectedLevels, toggleLevel, selectedSources, toggleSource, search, setSearch, selectedTags, toggleTag } =
+    useFilters((state) => ({
+      selectedLevels: state.selectedLevels,
+      toggleLevel: state.toggleLevel,
+      selectedSources: state.selectedSources,
+      toggleSource: state.toggleSource,
+      search: state.search,
+      setSearch: state.setSearch,
+      selectedTags: state.selectedTags,
+      toggleTag: state.toggleTag,
+    }))
   const sources = useMessageStore((state) => state.sources)
   const tags = useMessageStore((state) => state.tags)
 
@@ -53,7 +56,7 @@ export function Filters() {
       label: tag,
       value: tag,
     }))
-  }, [])
+  }, [tags])
 
   return (
     <Container>
@@ -75,7 +78,7 @@ export function Filters() {
           <MultipleSelect label="Sources" options={sourceOptions} values={selectedSources} onChange={toggleSource} />
         </SelectWrapper>
         <SelectWrapper>
-          <MultipleSelect label="Tags" options={tagOptions} values={selectedSources} onChange={toggleSource} />
+          <MultipleSelect label="Tags" options={tagOptions} values={selectedTags} onChange={toggleTag} />
         </SelectWrapper>
       </SelectContainer>
     </Container>

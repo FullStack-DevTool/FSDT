@@ -11,6 +11,9 @@ export type Filters = {
 
   selectedSources: string[]
   toggleSource: (source: string) => void
+
+  selectedTags: string[]
+  toggleTag: (tag: string) => void
 }
 
 export const useFilters = create<Filters>((set) => ({
@@ -41,6 +44,19 @@ export const useFilters = create<Filters>((set) => ({
       }
       return {
         selectedSources: [...state.selectedSources, source],
+      }
+    }),
+
+  selectedTags: [],
+  toggleTag: (tag: string) =>
+    set((state) => {
+      if (state.selectedTags.includes(tag)) {
+        return {
+          selectedTags: state.selectedTags.filter((t) => t !== tag),
+        }
+      }
+      return {
+        selectedTags: [...state.selectedTags, tag],
       }
     }),
 }))

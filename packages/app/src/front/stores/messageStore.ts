@@ -20,7 +20,7 @@ export const useMessageStore = create<MessageState>((set) => ({
       if (!newSources.includes(message.source)) {
         newSources.push(message.source)
       }
-      if (!newTags.includes(message.data.tag)) {
+      if (!newTags.includes(message.data.tag) && message.data.tag) {
         newTags.push(message.data.tag)
       }
       return { messages: [...state.messages, message], sources: newSources, tags: newTags }
