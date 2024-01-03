@@ -44,6 +44,8 @@ const PopperContainer = styled.div`
 const PopperModal = styled.div`
   background-color: ${(props) => props.theme.colors.background};
   box-shadow: 0px 0px 4px 1px rgba(0, 0, 0, 0.12);
+  max-height: 60vh;
+  overflow-y: auto;
 `
 
 const SelectOption = styled.div<{ isSelected: boolean }>`

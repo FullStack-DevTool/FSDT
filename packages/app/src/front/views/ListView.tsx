@@ -8,6 +8,7 @@ import { MdOutlineVerticalAlignBottom } from 'react-icons/md'
 import { LogCell } from '../components/grid/LogCell'
 import { useFilters } from '../stores/useFilters'
 import { LevelCell } from '../components/grid/LevelCell'
+import { TagCell } from '../components/grid/TagCell'
 
 const cols: ColDef<FsdtServerMessage>[] = [
   {
@@ -36,7 +37,7 @@ const cols: ColDef<FsdtServerMessage>[] = [
     getQuickFilterText: () => '',
     cellRenderer: ({ value }: { value: string }) => new Date(value).toLocaleTimeString(),
   },
-  { field: 'data.tag', width: 100, resizable: true },
+  { field: 'data.tag', width: 120, resizable: true, cellRenderer: TagCell },
 ]
 
 const StyledListRenderer = styled.div`
