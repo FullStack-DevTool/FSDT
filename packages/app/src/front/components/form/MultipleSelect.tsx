@@ -28,7 +28,7 @@ const BtnContainer = styled.button`
   color: ${(props) => props.theme.colors.secondaryText};
   font-size: ${(props) => props.theme.fontSize.small};
   transition: 0.3s;
-
+  position: relative;
   &:hover {
     cursor: pointer;
     background-color: ${(props) => props.theme.colors.hoverButton}};
@@ -69,6 +69,10 @@ const EmptyText = styled.p`
   font-size: ${(props) => props.theme.fontSize.small};
   padding: ${(props) => props.theme.margin.small} ${(props) => props.theme.margin.medium};
   color: ${(props) => props.theme.colors.secondaryText};
+`
+
+const Counter = styled.span`
+  color: ${(props) => props.theme.colors.primary};
 `
 
 export function MultipleSelect({
@@ -113,6 +117,7 @@ export function MultipleSelect({
   return (
     <>
       <BtnContainer style={style} ref={setReferenceElement} onClick={() => setIsActive((prev) => !prev)}>
+        {!valuesAsLabel && <Counter>{values.length}x</Counter>}
         {valuesAsLabel && values.length
           ? valuesAsLabelToDisplay.map((v, index) => <Fragment key={index}>{v}</Fragment>)
           : label}

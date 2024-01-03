@@ -23,20 +23,20 @@ const cols: ColDef<FsdtServerMessage>[] = [
     resizable: true,
     filterValueGetter: (params) => {
       if (typeof params.data === 'object') {
-        return JSON.stringify(params.data)
+        return JSON.stringify(params.data.data)
       }
       return params
     },
   },
-  { field: 'source', width: 100, resizable: true },
+  { field: 'source', width: 100, resizable: true, getQuickFilterText: () => '' },
   {
     field: 'data.timestamp',
     width: 100,
     resizable: true,
     getQuickFilterText: () => '',
     cellRenderer: ({ value }: { value: string }) => new Date(value).toLocaleTimeString(),
-  } /*,
-  { field: 'data.tag', width: 100, resizable: true },*/,
+  },
+  { field: 'data.tag', width: 100, resizable: true },
 ]
 
 const StyledListRenderer = styled.div`
@@ -79,18 +79,34 @@ export default function ListView() {
   const gridRef = useRef(null)
   const [stickToBottom, setStickToBottom] = useState(true)
   const messages = useMessageStore((state) => state.messages)
-  const { selectedLevels, search } = useFilters((state) => ({
+  const { selectedLevels, search, selectedSources, selectedTags } = useFilters((state) => ({
     selectedLevels: state.selectedLevels,
     search: state.search,
+    selectedSources: state.selectedSources,
+    selectedTags: state.selectedTags,
   }))
+
+  const filteredMessages = useMemo(() => {
+    let _messages = messages.filter((message) => selectedLevels.includes(message.data.level))
+
+    if (selectedSources.length) {
+      _messages = _messages.filter((message) => selectedSources.includes(message.source))
+    }
+
+    if (selectedTags.length) {
+      _messages = _messages.filter((message) => selectedTags.includes(message.data.tag))
+    }
+
+    return _messages
+  }, [messages, selectedLevels])
 
   useEffect(() => {
     if (gridRef.current && gridRef.current.api && stickToBottom) {
       requestAnimationFrame(() => {
-        gridRef.current.api.ensureIndexVisible(messages.length - 1)
+        gridRef.current.api.ensureIndexVisible(filteredMessages.length - 1)
       })
     }
-  }, [messages])
+  }, [filteredMessages])
 
   useEffect(() => {
     if (gridRef.current && gridRef.current.api) {
@@ -119,11 +135,6 @@ export default function ListView() {
       setStickToBottom(false)
     }
   }
-
-  const filteredMessages = useMemo(() => {
-    return messages.filter((message) => selectedLevels.includes(message.data.level))
-  }, [messages, selectedLevels])
-
   return (
     <>
       <StyledListRenderer className="ag-theme-material">
