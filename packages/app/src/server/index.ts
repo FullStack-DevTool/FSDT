@@ -1,15 +1,16 @@
 import 'dotenv/config'
 import http from 'http'
 import { WebSocketServer } from 'ws'
-import connectionManager from './connection/ConnectionManager'
+import { ConnectionManager } from './connection/ConnectionManager'
 import { FsdtConnection } from './connection/FsdtConnection'
-import { Any, EventType } from '@fullstack-devtool/core'
-import { sendErrorMessage, sendServerToMonitorMessage } from './utils/sendMessage'
-import { parseMessage } from './utils/parseMessage'
+import { Any } from '@fullstack-devtool/core'
+import { sendErrorMessage } from './utils/sendMessage'
 import { extractConnectionData } from './utils/extractConnectionData'
 
 const HOST_NAME = 'localhost'
 const PORT = Number(process.env.FSDT_PORT) || 0 // Get port from environment variable or use 0 to use a random port
+
+const connectionManager = new ConnectionManager()
 
 function setupHttpServer(res: (value: { port: number; server: http.Server }) => void) {
   const server = http.createServer((_, res) => {
@@ -33,34 +34,11 @@ function setupWsServer(server: http.Server) {
   const wsServer = new WebSocketServer({
     server: server,
   })
-
   wsServer.on('connection', (wsConnection, req) => {
     try {
       const { connectionName, connectionType } = extractConnectionData(req)
-
       const connection = new FsdtConnection(wsConnection, connectionType, connectionName)
-
       connectionManager.register(connection)
-
-      // Message handler
-      connection.connection.on('message', (message) => {
-        try {
-          const { type, data } = parseMessage(message)
-
-          // Send the log to the monitor
-          if (type === EventType.LOG) {
-            sendServerToMonitorMessage(connectionManager.monitor, connection, data)
-          }
-        } catch (error) {
-          // Send error message to the source
-          sendErrorMessage(connection.connection, error.message)
-        }
-      })
-
-      // Close handler
-      connection.connection.on('close', function () {
-        connectionManager.unregister(connection)
-      })
     } catch (error) {
       console.error(error)
       sendErrorMessage(wsConnection, error.message)

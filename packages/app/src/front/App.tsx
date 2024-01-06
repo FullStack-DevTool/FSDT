@@ -19,6 +19,10 @@ getPort().then((port) => {
   logger.onLogReceived((message) => {
     useMessageStore.getState().addMessage(message)
   })
+
+  logger.onBatchLogsReceived((messages) => {
+    useMessageStore.getState().addMessages(messages)
+  })
 })
 
 getAppVersion().then((version) => {
