@@ -15,7 +15,7 @@ export const theme = {
   },
   fontFamily: {
     title: 'Lexend Deca',
-    primary: 'Lexend',
+    primary: 'sans-serif',
     secondary: 'Fira Code',
   },
   fontWeight: {
