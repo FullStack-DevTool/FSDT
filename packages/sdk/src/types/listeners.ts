@@ -6,3 +6,7 @@ import {
 export type OnLogReceived = (
   message: FsdtServerMessage<FsdtLogMessageContent>
 ) => void;
+
+export type OnBatchLogsReceived = (
+  messages: FsdtServerMessage<FsdtLogMessageContent>[]
+) => void;

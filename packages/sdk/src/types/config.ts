@@ -4,4 +4,5 @@ export type FsdtServerConfig = {
   connectionType?: 'source' | 'monitor';
   useConsole?: boolean;
   disable?: boolean;
+  printErrors?: boolean;
 };

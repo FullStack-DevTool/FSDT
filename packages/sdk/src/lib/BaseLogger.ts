@@ -10,7 +10,7 @@ import {
 } from '@fullstack-devtool/core';
 
 import Ws from 'ws';
-import { FsdtServerConfig, OnLogReceived } from '../types';
+import { FsdtServerConfig, OnBatchLogsReceived, OnLogReceived } from '../types';
 import { stringifyHeaders } from './utils/stringifyHeaders';
 
 const DEFAULT_CONNECTION_TYPE = 'source';
@@ -25,7 +25,11 @@ export abstract class BaseLogger {
 
   private _onLogReceived: OnLogReceived | null = null;
 
+  private _onBatchLogsReceived: OnBatchLogsReceived | null = null;
+
   private _reconnectionDelay = 1000;
+
+  private _reconnectionTimeout: NodeJS.Timeout | null = null;
 
   constructor(name: string, config: FsdtServerConfig) {
     this._config = config;
@@ -46,6 +50,19 @@ export abstract class BaseLogger {
       throw new Error('onLogReceived is only available for monitor');
     }
     this._onLogReceived = callback;
+  }
+
+  /**
+   *
+   * Add a callback to be called when a batch of logs is received from the server (only available for monitor)
+   */
+  onBatchLogsReceived(
+    callback: (messages: FsdtServerMessage<FsdtLogMessageContent>[]) => void
+  ) {
+    if (this._config.connectionType !== 'monitor') {
+      throw new Error('onBatchLogsReceived is only available for monitor');
+    }
+    this._onBatchLogsReceived = callback;
   }
 
   protected displayLog(level: LogLevel, log: Any) {
@@ -117,11 +134,19 @@ export abstract class BaseLogger {
     this._client.onmessage = (message: MessageEvent) => {
       const data = JSON.parse(message.data.toString());
 
+      if (
+        Array.isArray(data) &&
+        data.every((log) => isSharedLogEvent(log)) &&
+        this._onBatchLogsReceived
+      ) {
+        this._onBatchLogsReceived(data);
+      }
+
       if (isSharedLogEvent(data) && this._onLogReceived) {
         this._onLogReceived(data);
       }
 
-      if (isErrorEvent(data)) {
+      if (isErrorEvent(data) && this._config.printErrors) {
         console.error(data.data.error);
       }
     };
@@ -132,7 +157,9 @@ export abstract class BaseLogger {
     };
 
     this._client.onerror = (error: Event) => {
-      console.error(error);
+      if (this._config.printErrors) {
+        console.error(error);
+      }
       // Try to reconnect
       this.tryReconnection();
     };
@@ -143,13 +170,17 @@ export abstract class BaseLogger {
   }
 
   private tryReconnection() {
+    if (this._reconnectionTimeout) {
+      clearTimeout(this._reconnectionTimeout);
+    }
     // Try to reconnect
-    setTimeout(() => {
+    this._reconnectionTimeout = setTimeout(() => {
       this.connect();
     }, this._reconnectionDelay);
   }
 
   private processWaitingQueue() {
+    // TODO: We should probably send the logs in batch
     this._waitingQueue.forEach((logData) => {
       this._client!.send(JSON.stringify(logData));
     });

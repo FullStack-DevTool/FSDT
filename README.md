@@ -69,6 +69,8 @@ type FsdtServerConfig = {
   useConsole?: boolean // If true, it displays logs in the default console in addition to FSDT console
 
   disable?: boolean // Disable the connection with the FSDT console (recommended in production)
+
+  printErrors?: boolean // Print the errors (connection errors, ...) (it's false by default)
 }
 ```
 
