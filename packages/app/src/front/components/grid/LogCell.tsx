@@ -8,8 +8,9 @@ type LogCellProps = {
 
 const StyledLogCell = styled.div`
   font-size: ${(props) => props.theme.fontSize.small};
+  font-family: ${(props) => props.theme.fontFamily.secondary};
   * {
-    font-family: 'Fira Code';
+    font-family: ${(props) => props.theme.fontFamily.secondary};
   }
 `
 
