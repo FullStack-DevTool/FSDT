@@ -29,14 +29,14 @@ To use this project correctly, follow these steps.
 ### Installation
 
 ```bash
-$ npm install @fullstack-devtool/sdk
-$ npm install -D @fullstack-devtool/app
+yarn add @fullstack-devtool/sdk
+yarn add -D @fullstack-devtool/app
 ```
 
 ### Start
 
 ```bash
-$ npm run fullstack-devtool -p <PORT_NUMBER>
+yarn fullstack-devtool -p <PORT_NUMBER>
 ```
 
 **<PORT_NUMBER>** is the port that will be used by the server. ⚠️ **It should be defined**.
