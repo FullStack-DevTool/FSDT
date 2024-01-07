@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.3](https://github.com/FullStack-DevTool/FSDT/compare/sdk-v1.0.2...sdk-v1.0.3) (2024-01-07)
+
+
+### Bug Fixes
+
+* **sdk:** reconnection + message queue ([#55](https://github.com/FullStack-DevTool/FSDT/issues/55)) ([68d4490](https://github.com/FullStack-DevTool/FSDT/commit/68d449081651893d376fb7799abb03e54b982016))
+
 ## [1.0.2](https://github.com/FullStack-DevTool/FSDT/compare/sdk-v1.0.1...sdk-v1.0.2) (2023-12-02)
 
 
