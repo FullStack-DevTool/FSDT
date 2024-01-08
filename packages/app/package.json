@@ -1,7 +1,7 @@
 {
 	"name": "@fullstack-devtool/app",
 	"productName": "fullstack-devtool",
-	"version": "0.4.0",
+	"version": "0.5.0",
 	"description": "A desktop application to retrieve logs from multiple applications",
 	"main": ".webpack/main",
 	"bin": {
