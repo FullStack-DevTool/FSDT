@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.5.0](https://github.com/FullStack-DevTool/FSDT/compare/app-v0.4.0...app-v0.5.0) (2024-01-08)
+
+
+### Features
+
+* update readme ([#58](https://github.com/FullStack-DevTool/FSDT/issues/58)) ([52735bc](https://github.com/FullStack-DevTool/FSDT/commit/52735bcd4bdcd2c65ce4a54fa28a9b1d2c4b9b20))
+
+
+### Bug Fixes
+
+* **app:** remove console on production + fonts ([bf8b611](https://github.com/FullStack-DevTool/FSDT/commit/bf8b6111f67b3a81e6296f2706a09e1860f1e376))
+
 ## [0.4.0](https://github.com/FullStack-DevTool/FSDT/compare/app-v0.3.0...app-v0.4.0) (2024-01-07)
 
 
