@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.1](https://github.com/FullStack-DevTool/FSDT/compare/app-v0.5.0...app-v0.5.1) (2024-01-08)
+
+
+### Bug Fixes
+
+* **app:** version in prod ([#61](https://github.com/FullStack-DevTool/FSDT/issues/61)) ([0bc3845](https://github.com/FullStack-DevTool/FSDT/commit/0bc38455a347bacbca9b10c39b2c6cd95bfc3305))
+
 ## [0.5.0](https://github.com/FullStack-DevTool/FSDT/compare/app-v0.4.0...app-v0.5.0) (2024-01-08)
 
 
