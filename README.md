@@ -74,6 +74,21 @@ type FsdtServerConfig = {
 }
 ```
 
+### Jest support
+
+If you want to be able to get logs in your Jest environment, you should add the following code in your test file.
+
+```typescript
+beforeAll(async () => {
+  await logger.waitForConnection() // To wait for the connection being established
+})
+afterAll(async () => {
+  await logger.disconnect() // Disconnect the logger in order to make jest terminate correctly
+})
+```
+
+> ⚠️ You should create a dedicated file to do so, in `.jest/setup.js` to implement this process for all the test files. In the jest.config.js, you should add the path in the `setupFilesAfterEnv` field. [See more info](https://jestjs.io/docs/configuration#setupfilesafterenv-array).
+
 ## ✏️ Contributing
 
 For contributing, please follow the <a href="https://github.com/FullStack-DevTool/FSDT/blob/main/CONTRIBUTING">Contributing instructions</a> from the repository.
