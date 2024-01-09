@@ -31,6 +31,10 @@ export abstract class BaseLogger {
 
   private _reconnectionTimeout: NodeJS.Timeout | null = null;
 
+  private _preventAutoReconnect = false;
+
+  private _waitForConnectionCallbacks: VoidFunction[] = [];
+
   constructor(name: string, config: FsdtServerConfig) {
     this._config = config;
     this._name = name;
@@ -63,6 +67,28 @@ export abstract class BaseLogger {
       throw new Error('onBatchLogsReceived is only available for monitor');
     }
     this._onBatchLogsReceived = callback;
+  }
+
+  disconnect(): Promise<void> {
+    this._preventAutoReconnect = true;
+    return new Promise((res) => {
+      if (this._client) {
+        this._client!.onclose = () => {
+          res();
+        };
+        this._client!.close();
+      }
+    });
+  }
+
+  waitForConnection(): Promise<void> {
+    return new Promise((res) => {
+      if (this._isConnected) {
+        res();
+      } else {
+        this._waitForConnectionCallbacks.push(res);
+      }
+    });
   }
 
   protected displayLog(level: LogLevel, log: Any) {
@@ -167,9 +193,18 @@ export abstract class BaseLogger {
   private onConnect() {
     this._isConnected = true;
     this.processWaitingQueue();
+
+    // Call all the callbacks waiting for the connection
+    if (this._waitForConnectionCallbacks.length) {
+      this._waitForConnectionCallbacks.forEach((callback) => callback());
+      this._waitForConnectionCallbacks = [];
+    }
   }
 
   private tryReconnection() {
+    if (this._preventAutoReconnect) {
+      return;
+    }
     if (this._reconnectionTimeout) {
       clearTimeout(this._reconnectionTimeout);
     }
