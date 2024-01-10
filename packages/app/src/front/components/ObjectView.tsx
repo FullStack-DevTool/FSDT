@@ -61,11 +61,27 @@ const TypedValue = ({ value }: { value: Any }) => {
 }
 
 export const ObjectView = ({ value }: ObjectViewProps) => {
-  const [previex, setPreview] = useState(true)
+  const [preview, setPreview] = useState(true)
 
   const keys = Object.keys(value)
 
-  if (previex) {
+  if (preview) {
+    if (Array.isArray(value)) {
+      return (
+        <CollapsedObjectViewContainer onClick={() => setPreview(false)}>
+          <span>[</span>
+          {keys.slice(0, MAX_KEYS_TO_SHOW_PREVIEW).map((key, index) => (
+            <FieldContainer key={key}>
+              <TypedValue value={value[key as Any]} />
+              {index < keys.length - 1 && <span>,</span>}
+            </FieldContainer>
+          ))}
+          {keys.length > MAX_KEYS_TO_SHOW_PREVIEW && <span>...</span>}
+          <span>]</span>
+        </CollapsedObjectViewContainer>
+      )
+    }
+
     return (
       <CollapsedObjectViewContainer onClick={() => setPreview(false)}>
         <span>{'{'}</span>

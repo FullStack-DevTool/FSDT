@@ -24,6 +24,7 @@ const createWindow = async (): Promise<void> => {
     titleBarStyle: 'hidden',
   })
 
+  mainWindow.setWindowButtonVisibility(false)
   // Initialize the aggregator server
   const { port } = await initServer()
 

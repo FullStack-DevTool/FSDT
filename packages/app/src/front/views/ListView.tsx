@@ -1,6 +1,6 @@
 import { useMessageStore } from '../stores/messageStore'
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { BodyScrollEvent, ColDef } from 'ag-grid-community'
+import { BodyScrollEvent, CellClickedEvent, ColDef } from 'ag-grid-community'
 import { Any, FsdtServerMessage } from '@fullstack-devtool/core'
 import styled from '@emotion/styled'
 import { AgGridReact } from 'ag-grid-react'
@@ -136,6 +136,13 @@ export default function ListView() {
       setStickToBottom(false)
     }
   }
+
+  const onCellClicked = (event: CellClickedEvent) => {
+    if (event.colDef.field === 'data.content') {
+      setStickToBottom(false)
+    }
+  }
+
   return (
     <>
       <StyledListRenderer className="ag-theme-material">
@@ -153,6 +160,7 @@ export default function ListView() {
           gridOptions={{
             rowHeight: 45,
           }}
+          onCellClicked={onCellClicked}
           /*getRowStyle={rowStyle}*/
         />
       </StyledListRenderer>
