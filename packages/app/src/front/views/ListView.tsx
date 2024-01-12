@@ -99,7 +99,7 @@ export default function ListView() {
     }
 
     return _messages
-  }, [messages, selectedLevels, selectedTags])
+  }, [messages, selectedLevels, selectedTags, selectedSources])
 
   useEffect(() => {
     if (gridRef.current && gridRef.current.api && stickToBottom) {
