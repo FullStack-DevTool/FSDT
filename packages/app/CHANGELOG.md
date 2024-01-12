@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.6.0](https://github.com/FullStack-DevTool/FSDT/compare/app-v0.5.1...app-v0.6.0) (2024-01-12)
+
+
+### Features
+
+* **sdk:** jest support ([#65](https://github.com/FullStack-DevTool/FSDT/issues/65)) ([507ede0](https://github.com/FullStack-DevTool/FSDT/commit/507ede04a81d4f4dd976c5e35f39750dc6bf03e1))
+
+
+### Bug Fixes
+
+* **app:** cell bugs ([#68](https://github.com/FullStack-DevTool/FSDT/issues/68)) ([275005e](https://github.com/FullStack-DevTool/FSDT/commit/275005e1f455ce4ccf891f1025455a235e871313))
+
 ## [0.5.1](https://github.com/FullStack-DevTool/FSDT/compare/app-v0.5.0...app-v0.5.1) (2024-01-08)
 
 
