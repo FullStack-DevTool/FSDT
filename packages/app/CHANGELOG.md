@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.1](https://github.com/FullStack-DevTool/FSDT/compare/app-v0.6.0...app-v0.6.1) (2024-01-12)
+
+
+### Bug Fixes
+
+* source filter ([#71](https://github.com/FullStack-DevTool/FSDT/issues/71)) ([813735b](https://github.com/FullStack-DevTool/FSDT/commit/813735b318f2fd6f71034e56285d2cf45ddd242a))
+
 ## [0.6.0](https://github.com/FullStack-DevTool/FSDT/compare/app-v0.5.1...app-v0.6.0) (2024-01-12)
 
 
