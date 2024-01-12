@@ -2,9 +2,9 @@ export const theme = {
   colors: {
     text: '#000000',
     secondaryText: '#7A7A7A',
-    primary: '#D132F9',
+    primary: '#3a4c9b',
     border: '#E6E6E6',
-    activeBorder: '#D132F9',
+    activeBorder: '#3a4c9b',
     background: '#FFFFFF',
     hoverButton: 'rgba(69,164,251, 0.13)',
     selectedButton: 'rgba(69,164,251, 0.33)',

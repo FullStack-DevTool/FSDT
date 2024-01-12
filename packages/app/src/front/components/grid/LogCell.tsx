@@ -7,6 +7,7 @@ type LogCellProps = {
 }
 
 const StyledLogCell = styled.div`
+  white-space: break-spaces;
   font-size: ${(props) => props.theme.fontSize.small};
   font-family: ${(props) => props.theme.fontFamily.secondary};
   * {
