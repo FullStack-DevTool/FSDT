@@ -3,6 +3,18 @@
 <p align="center">
   <a href="https://fsdt.maxime-p.dev/" target="blank"><img src="https://raw.githubusercontent.com/FullStack-DevTool/FSDT/main/packages/app/src/front/assets/images/Blue_full_rounded_fsdt.svg" width="120" alt="FSDT Logo" /></a>
 </p>
+<p align="center">
+<strong>
+Your favorite multi-application devtool!
+</strong>
+</p>
+<p align="center">
+<a href="https://www.npmjs.com/package/@fullstack-devtool/sdk" target="_blank"><img src="https://img.shields.io/npm/v/%40fullstack-devtool%2Fsdk?label=SDK" alt="SDK NPM Version" /></a>
+<a href="https://www.npmjs.com/package/@fullstack-devtool/sdk" target="_blank"><img src="https://img.shields.io/npm/dt/%40fullstack-devtool%2Fsdk?label=SDK%20downloads" alt="SDK NPM Downloads" /></a>
+<a href="https://www.npmjs.com/package/@fullstack-devtool/app" target="_blank"><img src="https://img.shields.io/npm/v/%40fullstack-devtool%2Fapp?label=APP" alt="APP NPM Version" /></a>
+<a href="https://www.npmjs.com/package/@fullstack-devtool/app" target="_blank"><img src="https://img.shields.io/npm/dt/%40fullstack-devtool%2Fapp?label=APP%20downloads" alt="APP NPM Downloads" /></a>
+<a href="https://github.com/FullStack-DevTool/FSDT" target="_blank"><img src="https://img.shields.io/github/license/FullStack-DevTool/FSDT" alt="FSDT License" /></a>
+</p>
 
 FullStack DevTool is an entirely new type of interactive console that aggregates and **displays logs from multiple source applications** in an organized manner. Previously, a developer working on multiple interdependent applications had to split their attention across multiple interfaces to monitor all the logs. With **FullStack DevTool**, they can now track, organize, and filter them through a single, optimized interface.
 
