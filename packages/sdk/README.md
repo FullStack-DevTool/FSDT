@@ -1,5 +1,21 @@
 # 🚀 FullStack DevTool
 
+<p align="center">
+  <a href="https://fsdt.maxime-p.dev/" target="blank"><img src="https://raw.githubusercontent.com/FullStack-DevTool/FSDT/main/packages/app/src/front/assets/images/Blue_full_rounded_fsdt.svg" width="120" alt="FSDT Logo" /></a>
+</p>
+<p align="center">
+<strong>
+Your favorite multi-application devtool!
+</strong>
+</p>
+<p align="center">
+<a href="https://www.npmjs.com/package/@fullstack-devtool/sdk" target="_blank"><img src="https://img.shields.io/npm/v/%40fullstack-devtool%2Fsdk?label=SDK" alt="SDK NPM Version" /></a>
+<a href="https://www.npmjs.com/package/@fullstack-devtool/sdk" target="_blank"><img src="https://img.shields.io/npm/dt/%40fullstack-devtool%2Fsdk?label=SDK%20downloads" alt="SDK NPM Downloads" /></a>
+<a href="https://www.npmjs.com/package/@fullstack-devtool/app" target="_blank"><img src="https://img.shields.io/npm/v/%40fullstack-devtool%2Fapp?label=APP" alt="APP NPM Version" /></a>
+<a href="https://www.npmjs.com/package/@fullstack-devtool/app" target="_blank"><img src="https://img.shields.io/npm/dt/%40fullstack-devtool%2Fapp?label=APP%20downloads" alt="APP NPM Downloads" /></a>
+<a href="https://github.com/FullStack-DevTool/FSDT" target="_blank"><img src="https://img.shields.io/github/license/FullStack-DevTool/FSDT" alt="FSDT License" /></a>
+</p>
+
 FullStack DevTool is an entirely new type of interactive console that aggregates and **displays logs from multiple source applications** in an organized manner. Previously, a developer working on multiple interdependent applications had to split their attention across multiple interfaces to monitor all the logs. With **FullStack DevTool**, they can now track, organize, and filter them through a single, optimized interface.
 
 FullStack DevTool also holds value for developers working on a single application at a time, as they can benefit from an unprecedented log management system (interactive log categorization, filtering, sorting, etc.).
@@ -46,32 +62,32 @@ yarn fullstack-devtool -p <PORT_NUMBER>
 ### Use the FSDT logger
 
 ```typescript
-import FsdtLogger from '@fullstack-devtool/sdk';
+import FsdtLogger from '@fullstack-devtool/sdk'
 
 const logger = new FsdtLogger('test-app-1', {
   port: 1234, // It should be equal to the <PORT_NUMBER>
   connectionType: 'source',
-});
+})
 
-logger.info({ myVar: 'myVar' });
+logger.info({ myVar: 'myVar' })
 ```
 
 ### Configure the FSDT logger
 
 ```typescript
 type FsdtServerConfig = {
-  port: number; // On which the server runs on
+  port: number // On which the server runs on
 
-  domainName?: string; // Default is "localhost"
+  domainName?: string // Default is "localhost"
 
-  connectionType?: 'source' | 'monitor'; // Default is source
+  connectionType?: 'source' | 'monitor' // Default is source
 
-  useConsole?: boolean; // If true, it displays logs in the default console in addition to FSDT console
+  useConsole?: boolean // If true, it displays logs in the default console in addition to FSDT console
 
-  disable?: boolean; // Disable the connection with the FSDT console (recommended in production)
+  disable?: boolean // Disable the connection with the FSDT console (recommended in production)
 
-  printErrors?: boolean; // Print the errors (connection errors, ...) (it's false by default)
-};
+  printErrors?: boolean // Print the errors (connection errors, ...) (it's false by default)
+}
 ```
 
 ### Jest support
@@ -80,11 +96,11 @@ If you want to be able to get logs in your Jest environment, you should add the 
 
 ```typescript
 beforeAll(async () => {
-  await logger.waitForConnection(); // To wait for the connection being established
-});
+  await logger.waitForConnection() // To wait for the connection being established
+})
 afterAll(async () => {
-  await logger.disconnect(); // Disconnect the logger in order to make jest terminate correctly
-});
+  await logger.disconnect() // Disconnect the logger in order to make jest terminate correctly
+})
 ```
 
 > ⚠️ You should create a dedicated file to do so, in `.jest/setup.js` to implement this process for all the test files. In the jest.config.js, you should add the path in the `setupFilesAfterEnv` field. [See more info](https://jestjs.io/docs/configuration#setupfilesafterenv-array).
