@@ -107,7 +107,7 @@ afterAll(async () => {
 
 ## ✏️ Contributing
 
-For contributing, please follow the <a href="https://github.com/FullStack-DevTool/FSDT/blob/main/CONTRIBUTING">Contributing instructions</a> from the repository.
+For contributing, please follow the <a href="https://github.com/FullStack-DevTool/FSDT/blob/main/CONTRIBUTING.md">Contributing instructions</a> from the repository.
 
 ## 📖 License
 
