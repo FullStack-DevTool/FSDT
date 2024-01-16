@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.1](https://github.com/FullStack-DevTool/FSDT/compare/sdk-v1.2.0...sdk-v1.2.1) (2024-01-16)
+
+
+### Bug Fixes
+
+* update contributing in readme ([#73](https://github.com/FullStack-DevTool/FSDT/issues/73)) ([8a52422](https://github.com/FullStack-DevTool/FSDT/commit/8a52422e610b862beda2bc6d95cc5d84117a923f))
+
 ## [1.2.0](https://github.com/FullStack-DevTool/FSDT/compare/sdk-v1.1.0...sdk-v1.2.0) (2024-01-12)
 
 
